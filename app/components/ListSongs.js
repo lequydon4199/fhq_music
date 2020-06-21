@@ -10,54 +10,54 @@ import {
 } from 'react-native-popup-menu';
 import { Icon } from 'react-native-elements';
 import { device } from '../config/ScreenDimensions';
-import { songs } from '../data/data';
+// import { songs } from '../data/data';
 
 export default class ListSongs extends React.Component {
   state = {
-    dayOffset: '',
-    playlist: []
+    playlist: [],
+    // songs : this.props.route.params.data
   }
 
-  getDayOffset = time => {
-    const timeOffset = ((Date.now()) - time)/1000;
-    if (timeOffset < 86400) {
-      return 'Hôm nay';
-    } else if (timeOffset < 172800){
-      return 'Hôm qua';
-    } else if (timeOffset < 259200){
-      return 'Hôm kia';
-    } else if (timeOffset < 604800){
-      return `${Math.floor(timeOffset/86400)} ngày trước`
-    } else if (timeOffset < 2592000){
-      return `${Math.floor(timeOffset/604800)} tuần trước`
-    } else return new Date(time).toLocaleString();
-  }
+  // getDayOffset = time => {
+  //   const timeOffset = ((Date.now()) - time)/1000;
+  //   if (timeOffset < 86400) {
+  //     return 'Hôm nay';
+  //   } else if (timeOffset < 172800){
+  //     return 'Hôm qua';
+  //   } else if (timeOffset < 259200){
+  //     return 'Hôm kia';
+  //   } else if (timeOffset < 604800){
+  //     return `${Math.floor(timeOffset/86400)} ngày trước`
+  //   } else if (timeOffset < 2592000){
+  //     return `${Math.floor(timeOffset/604800)} tuần trước`
+  //   } else return new Date(time).toLocaleString();
+  // }
 
   playSong = index => {
     this.props.navigate("Player", {playlist: this.state.playlist[index]})//, index: index, status: "Song"});
   }
   
   renderItem = ({item, index}) => {
-    let itemDayOffset = this.getDayOffset(item.latestListening);
-    let showDayOffset = false;
-    if ((this.props.type==='history')&&(itemDayOffset!==this.state.dayOffset)){
-      showDayOffset = true;
-      this.state.dayOffset = itemDayOffset;
-    }
+    // let itemDayOffset = this.getDayOffset(item.latestListening);
+    // let showDayOffset = false;
+    // if ((this.props.type==='history')&&(itemDayOffset!==this.state.dayOffset)){
+    //   showDayOffset = true;
+    //   this.state.dayOffset = itemDayOffset;
+    // }
     
     return(
       <View>
-        {showDayOffset ?
+        {/* {showDayOffset ?
         <View style={styles.dayOffsetContainer}>
           <Text style={styles.dayOffset}>{itemDayOffset}</Text>
         </View> : 
-        null }
+        null } */}
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
             this.playSong(index);
-            item.latestListening = new Date().getTime();
-            this.setState({dayOffset: ''});
+            // item.latestListening = new Date().getTime();
+            // this.setState({dayOffset: ''});
           }}  
         >
         <View style={styles.container}>
@@ -69,11 +69,11 @@ export default class ListSongs extends React.Component {
             <View style={styles.singerContainer}>
               <Text style={styles.singer}>{item.artist}</Text>
             </View>
-            {this.props.type==='favorite' ? 
+            {/* {this.props.type==='favorite' ? 
             <View style={styles.favoriteIcon}>
               <Icon name="favorite" size={device.width*0.08} color='#D50000'/>
             </View> : 
-            null}
+            null} */}
           </View>  
         </View>
         </TouchableOpacity>
@@ -82,20 +82,22 @@ export default class ListSongs extends React.Component {
   }
 
   render(){
-    if (this.props.type === 'songs'){
-      this.state.playlist = songs.sort((a, b) => {
-        let nameA = a.title.toUpperCase();
-        let nameB = b.title.toUpperCase();
-        return nameA.localeCompare(nameB);
-      });
-    } else if (this.props.type === 'favorite') {
-      this.state.playlist = songs.filter(item => item.favorite==1)
-    } else if (this.props.type === 'history') {
-      this.state.playlist = songs.sort((a, b) => b.latestListening - a.latestListening);
-    }
+    // if (this.props.type === 'songs'){
+    //   this.state.playlist = songs.sort((a, b) => {
+    //     let nameA = a.title.toUpperCase();
+    //     let nameB = b.title.toUpperCase();
+    //     return nameA.localeCompare(nameB);
+    //   });
+    // } else if (this.props.type === 'favorite') {
+    //   this.state.playlist = songs.filter(item => item.favorite==1)
+    // } else if (this.props.type === 'history') {
+    //   this.state.playlist = songs.sort((a, b) => b.latestListening - a.latestListening);
+    // }
+    this.state.playlist = this.props.data
+    console.log(this.state.playlist)
     return (
       <FlatList
-        data={this.state.playlist}
+        data = {this.props.data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={this.renderItem}
         style={styles.flatList}

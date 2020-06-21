@@ -13,12 +13,13 @@ export default class Home extends React.Component {
     this.state = {
         singer: [],
         playlist: [],
-        the_loai: []
+        the_loai: [],
+        id: 1
     };
 }
 
 componentDidMount() {
-  return fetch("http://192.168.1.253:5000/home")
+  return fetch("https://fhq-music-app.herokuapp.com//home")
       .then(response => response.json())
       .then(data => this.setState({
           singer: data.ca_si,
@@ -29,6 +30,7 @@ componentDidMount() {
 
 
   render(){
+    
     return(
       <SafeAreaView style={{flex: 1, backgroundColor: '#33AFFF', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
         <View style={styles.container}>
@@ -61,7 +63,7 @@ componentDidMount() {
                 itemPictureStyle={styles.singerPictureStyle}
                 itemStyle={styles.singerStyle}
                 navigate={this.props.navigation.navigate}
-
+                type = 'singer'
               />
               <Item 
                 category="Chủ đề"

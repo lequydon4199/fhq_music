@@ -13,6 +13,7 @@ import Profile from './app/screens/Profile';
 import Player from './app/screens/Player';
 import { Provider } from 'react-redux';
 import store from './app/store/index';
+import PlaylistComponent from './app/components/PlaylistComponent';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,6 +63,7 @@ function App() {
                 ...TransitionPresets.ModalSlideFromBottomIOS
               }}
             /> }
+            <Stack.Screen name="PlaylistComponent" component={PlaylistComponent}/>
           </Stack.Navigator>
         </NavigationContainer>
       </MenuProvider>
