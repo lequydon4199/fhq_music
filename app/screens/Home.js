@@ -54,6 +54,8 @@ componentDidMount() {
                 data={this.state.playlist}
                 horizontal={true}
                 scrollEnabled={false}
+                navigate={this.props.navigation.navigate}
+                type = 'playlist'
               />
               <Item 
                 category="Ca sĩ" 
@@ -69,6 +71,8 @@ componentDidMount() {
                 category="Chủ đề"
                 data={this.state.the_loai}
                 horizontal={true}
+                navigate={this.props.navigation.navigate}
+                type = 'the_loai'
               />
             </ScrollView>
           </View>

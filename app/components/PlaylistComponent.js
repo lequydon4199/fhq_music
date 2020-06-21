@@ -18,6 +18,7 @@ export default class PlaylistComponent extends React.Component {
         playlistName: this.props.route.params.data.name,
         id: this.props.route.params.data.id,
         data: [],
+        songs: [],
         isFetching: true,
         noData: false,
         // a: this.props.route.params.type
@@ -51,8 +52,10 @@ export default class PlaylistComponent extends React.Component {
     //     }
     // }
     async UNSAFE_componentWillMount() {
-        if(this.props.route.params.type == 'singer'){
-            fetch("https://fhq-music-app.herokuapp.com/ca_si", {
+        let songs = [];
+        if (this.props.route.params.type === 'playlist'){
+            let response = null
+            response = await fetch("https://fhq-music-app.herokuapp.com/playlist", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -62,32 +65,65 @@ export default class PlaylistComponent extends React.Component {
                 id: this.state.id
 
             })
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({ data: responseJson,
-                    isFetching: false 
-                });
-            })}
+        })
+        const responseJson = await response.json();
+        songs = responseJson
+        }
+        if(this.props.route.params.type == 'singer'){
+            let response = null
+            response = await fetch("https://fhq-music-app.herokuapp.com/ca_si", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.id
+
+            })
+        })
+        const responseJson = await response.json();
+        songs = responseJson
         
-       
-        // if ((this.state.data).length > 0){
-        //     this.setState({
-        //         noData: true,
-        //         isFetching: false
-        //         })
-        // }
-        // else{
-        //     this.setState({
-        //         isFetching: false
-        //         })
-        // }
+        }
+        if(this.props.route.params.type == 'the_loai'){
+            let response = null
+            response = await fetch("https://fhq-music-app.herokuapp.com/the_loai", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.id
+
+            })
+        })
+        const responseJson = await response.json();
+        songs = responseJson
+        
+        }
+        if (songs.length > 0){
+            this.setState({
+                data: songs,
+                isFetching: false
+            });
+        } else {
+            this.setState({
+                isFetching: false,
+                noData: true,
+            });
+        
+        }
     }
+    
     _goBack = () => {
         this.props.navigation.goBack();
     }
 
     render() {
-        // console.log(this.state.data)
+        // console.log(Number((this.state.data).length) === Number(0))
+        console.log(this.state.data)
         const {navigate} = this.props.navigation;
         return(
         <React.Fragment>

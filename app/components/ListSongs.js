@@ -66,9 +66,11 @@ export default class ListSongs extends React.Component {
             <View style={styles.songNameContainer}>
               <Text style={styles.songName}>{item.title}</Text>
             </View>
+            {/* {item.artist.map((item, index) => ( */}
             <View style={styles.singerContainer}>
               <Text style={styles.singer}>{item.artist}</Text>
             </View>
+            {/* ))} */}
             {/* {this.props.type==='favorite' ? 
             <View style={styles.favoriteIcon}>
               <Icon name="favorite" size={device.width*0.08} color='#D50000'/>
