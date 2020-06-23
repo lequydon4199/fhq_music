@@ -49,4 +49,17 @@ function updateSong(state = defaultStatus, action) {
   return state;
 }
 
-export {player, updateSong}
+// export {player, updateSong}
+import { defaultUser } from '../data/data';
+
+function user(state = defaultUser, action) {
+  if (action.type === 'SET_USER'){
+    return {
+      ...state,
+      ...action.user
+    };
+  } 
+  return state;
+}
+
+export {player, updateSong, user}

@@ -101,4 +101,14 @@ const playListData = [
       "artwork": "https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/We%20Were%20In%20Love.jpg"
     }
   ]
-  export {playListData, topicData, forYou, list, songs, user}
+  const defaultUser = {
+    id: 0,
+    username: 'Khách',
+    nickname: 'Khách',
+    avatar: 'https://www.macworld.co.uk/cmsdata/features/3612963/how_to_get_music_on_iphone_1600home_thumb900_1-1.jpg',
+    favorite: [],
+    history: [],
+    mySong: []
+  }
+  
+  export {playListData, topicData, forYou, list, songs, defaultUser, user}

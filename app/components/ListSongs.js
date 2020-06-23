@@ -11,7 +11,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { device } from '../config/ScreenDimensions';
 // import { songs } from '../data/data';
-
+import TrackPlayer from '../trackPlayer/index'
 export default class ListSongs extends React.Component {
   state = {
     playlist: [],
@@ -34,7 +34,11 @@ export default class ListSongs extends React.Component {
   // }
 
   playSong = index => {
-    this.props.navigate("Player", {playlist: this.state.playlist[index]})//, index: index, status: "Song"});
+    // this.props.navigate("Player", {playlist: this.state.playlist[index] , continue: "false"})
+    TrackPlayer.reset();
+    TrackPlayer.add( this.state.playlist[index] )
+
+    this.props.navigate("Player") //, index: index, status: "Song"});
   }
   
   renderItem = ({item, index}) => {

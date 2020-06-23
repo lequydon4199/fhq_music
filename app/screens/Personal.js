@@ -6,8 +6,15 @@ import { list, user, songs } from '../data/data';
 import MiniPlayer from '../components/MiniPlayer';
 import ListSongs from '../components/ListSongs';
 import TrackPlayer, {ProgressComponent} from 'react-native-track-player';
+
+
+
+
 export default class Personal extends React.Component {
   logout(){
+    AsyncStorage.removeItem('user');
+    this.props.setUser(defaultUser);
+
     TrackPlayer.destroy()
     this.props.navigation.navigate("Login")
   }
@@ -28,7 +35,7 @@ export default class Personal extends React.Component {
               </View>
               <View style={{justifyContent: "center"}}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>Username: {user.username}</Text>
-                <Text style={{marginVertical: 3}}>Nickname: {user.fullname}</Text>
+                <Text style={{marginVertical: 3}}>Nickname: {user.nickname}</Text>
                 <Button 
                   containerStyle={{marginTop: 5}}
                   titleStyle={{fontSize: 14}}
@@ -43,7 +50,7 @@ export default class Personal extends React.Component {
               return (
                 <View key={i} >
                   <TouchableOpacity 
-                    onPress={()=> navigate('SongList', {title: item.title, type: item.type})}
+                    onPress={()=> navigate('Player', {playlist: TrackPlayer.getQueue() , continue: "true"})}
                     activeOpacity={0.3}
                   >
                     <ListItem
@@ -68,9 +75,9 @@ export default class Personal extends React.Component {
               </View>
             </View>
           </View>
-        <MiniPlayer />
         </View>
       </SafeAreaView>
     );
   }
 }
+

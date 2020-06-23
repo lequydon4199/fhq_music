@@ -24,7 +24,7 @@ export default class SongList extends React.Component {
                 <ListSongs type={routeParams.type} navigate={navigate}/>
               </View>
             </View>
-            <MiniPlayer navigate={navigate}/>
+            {/* <MiniPlayer navigate={navigate}/> */}
           </View>
         </SafeAreaView>
       </React.Fragment>

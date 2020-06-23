@@ -6,6 +6,8 @@ import { StyleSheet, Text, View, Image,
 import CheckBox from '@react-native-community/checkbox';
 import { Alert } from 'react-native';
 
+
+
 export default class Login extends Component {
 	constructor(props) {
 		super(props);

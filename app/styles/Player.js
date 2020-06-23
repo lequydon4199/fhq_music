@@ -48,6 +48,7 @@ export default StyleSheet.create({
         borderBottomRightRadius:5,
         justifyContent:'center',
         
+        
       },
       taskBar: {
         marginTop: device.height * 0.03,

@@ -5,8 +5,6 @@ import { device } from '../config/ScreenDimensions';
 import MiniPlayer from '../components/MiniPlayer';
 import SongsComponent from './SongsComponent';
 import ListSongs from './ListSongs';
-
-import { FlatList } from 'react-native-gesture-handler';
 import Item from './ComponentStyles/Item';
 export default class PlaylistComponent extends React.Component {
     constructor(props) {
@@ -160,8 +158,7 @@ export default class PlaylistComponent extends React.Component {
                     </View>
                 </View>
                 </View>
-                <MiniPlayer navigate={this.props.navigation.navigate}/>
-            </SafeAreaView>
+              </SafeAreaView>
         </React.Fragment>
         );
     }

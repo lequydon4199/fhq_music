@@ -36,9 +36,10 @@ function TabNavigator() {
           return <Icon name={iconName} size={size} color={color} />;
         },
       })}
-    >
+    > 
       <Tab.Screen name="Trang chủ" component={Home}/>
       <Tab.Screen name="Cá nhân" component={Personal} />
+      {/* <Tab.Screen name="ASDSAD" component={Player} /> */}
     </Tab.Navigator>
   );
 }
