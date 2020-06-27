@@ -6,12 +6,12 @@ import styles from "./ComponentStyles/MiniPlayer";
 import { updateSongStatus } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import TrackPlayer, { ProgressComponent } from 'react-native-track-player';
+import TrackPlayer from '../trackPlayer/index'
 import PropTypes from 'prop-types';
 
 
 
-class MiniPlayer extends ProgressComponent {
+class MiniPlayer extends React.Component {
     _togglePlayPause() {
         if(this.props.state == TrackPlayer.STATE_PAUSED) {
             TrackPlayer.play();
@@ -19,20 +19,21 @@ class MiniPlayer extends ProgressComponent {
             TrackPlayer.pause();
         }
     }
-    render(){
-        if(!this.props.track || this.props.state == TrackPlayer.STATE_NONE || this.props.state == TrackPlayer.STATE_STOPPED) {
-            return <View />;
-        
-
-        }
+    render(){ 
+        var current_id =  TrackPlayer.getCurrentTrack();
+        var track =  TrackPlayer.getTrack(current_id);
+        // if(TrackPlayer.getState() == 'STATE_NONE') {
+        //     return <View></View>;
+        // }
+        // console.log(this.props.miniPlayerState.display)
             return (
                 <TouchableOpacity onPress={() => this.props.navigate('Player')}>
                     <View style={styles.container}>
                         <View style={{flexDirection: 'row'}}>
-                            <Image style={styles.picture} source={{uri: this.props.track.artwork}}/>
+                            <Image style={styles.picture} source={{uri: track.artwork}}/>
                             <View style={{flex: 1}}>
-                                <Text style={styles.songTitle}>{this.props.track.title}</Text>
-                                <Text style={styles.singerName}>{this.props.track.artist}</Text>
+                                <Text style={styles.songTitle}>{track.title}</Text>
+                                <Text style={styles.singerName}>{track.artist}</Text>
                             </View>
                             <View style={styles.controlArea}>
                                 <TouchableOpacity onPress={() => this._togglePlayPause()}>
@@ -51,19 +52,16 @@ class MiniPlayer extends ProgressComponent {
     }
 }
 
-MiniPlayer.propTypes = {
-    state: PropTypes.number,
-    track: PropTypes.object
-};
 
-function mapStateToProps(state) {
-    const currentTrack = state.playback.currentTrack;
-    const tracks = state.library.tracks;
 
-    return {
-        state: state.playback.state,
-        track: tracks ? tracks.find((track) => track.id == currentTrack) : null
-    };
-}
-
-module.exports = connect(mapStateToProps)(MiniPlayer);
+// const mapStateToProps = state => ({
+//     miniPlayerState: state.miniPlayerState,
+//   });
+//   //
+//   const mapDispatchToProps = dispatch => ({
+//     dispatch: dispatch
+//   });
+  
+//   export default connect(mapStateToProps, mapDispatchToProps)(MiniPlayer);
+  
+  

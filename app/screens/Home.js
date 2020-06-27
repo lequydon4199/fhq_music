@@ -76,7 +76,7 @@ componentDidMount() {
               />
             </ScrollView>
           </View>
-          {/* <MiniPlayer navigate={this.props.navigation.navigate}/> */}
+          {/* <MiniPlayer /> */}
         </View>
       </SafeAreaView>
     );

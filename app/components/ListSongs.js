@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, View, Text, Image, TouchableOpacity } from 'react-native';
 import  * as Animatable from 'react-native-animatable';
 import styles from './ComponentStyles/ListSongs';
+import SongOption from './SongOption';
 import {
   Menu,
   MenuOptions,
@@ -38,9 +39,16 @@ export default class ListSongs extends React.Component {
     TrackPlayer.reset();
     TrackPlayer.add( this.state.playlist[index] )
 
-    this.props.navigate("Player") //, index: index, status: "Song"});
+    this.props.navigate("Player") 
   }
   
+  addToPlaylist = index => {
+    // this.props.navigate("Player", {playlist: this.state.playlist[index] , continue: "false"})
+    // TrackPlayer.reset();
+    TrackPlayer.add( this.state.playlist[index] )
+
+    // this.props.navigate("Player") //, index: index, status: "Song"});
+  }
   renderItem = ({item, index}) => {
     // let itemDayOffset = this.getDayOffset(item.latestListening);
     // let showDayOffset = false;
@@ -80,7 +88,22 @@ export default class ListSongs extends React.Component {
               <Icon name="favorite" size={device.width*0.08} color='#D50000'/>
             </View> : 
             null} */}
-          </View>  
+          </View>
+          <View style={styles.optionIcon}>
+          <Menu>
+                <MenuTrigger>
+                <Icon name="more-vert" size={30} />
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{width: 200, borderRadius: 5}}>
+                <MenuOption onSelect={() => this.addToFavorite()} style={styles.menuOption}>
+                    <Icon name="favorite" color="red"/><Text> Yêu thích</Text>
+                </MenuOption>
+                <MenuOption onSelect={() => this.addToPlaylist(index)} style={styles.menuOption}>
+                    <Icon name="playlist-add" /><Text> Thêm vào playlist</Text>
+                </MenuOption>
+                </MenuOptions>
+            </Menu>
+          </View>
         </View>
         </TouchableOpacity>
       </View>

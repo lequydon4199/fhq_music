@@ -67,5 +67,10 @@ export default StyleSheet.create({
     marginTop: device.width*0.01,
     height: device.width*0.08,
     width: device.width*0.08,
+  },
+  menuOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
   }
+
 });
