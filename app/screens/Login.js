@@ -2,9 +2,10 @@ import React, { Component, useState } from 'react'
 import { StyleSheet, Text, View, Image, 
 	TouchableWithoutFeedback, StatusBar,
 	TextInput, SafeAreaView, Keyboard, TouchableOpacity,
-	KeyboardAvoidingView, Item, Platform } from 'react-native';
+	KeyboardAvoidingView, Item, Platform,AsyncStorage } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Alert } from 'react-native';
+
 
 
 
@@ -26,33 +27,27 @@ export default class Login extends Component {
 		this.setState({isChecked: !value})
 	} 
 
-	login = () => {
+	login = async () => {
 		if(this.state.username == '' || this.state.password == ''){
 			Alert.alert("Vui lòng điền thông tin đăng nhập!")
 		}
 		else{
-			fetch("https://fhq-music-app.herokuapp.com/login", {
+			const response = await fetch(`https://fhq-music-app.herokuapp.com/login`,{
 				method: 'POST',
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({
-					username: this.state.username,
-					password: this.state.password,
-
-				})
-			}).then((response) => response.json())
-				.then((responseJson) => {
-					this.setState({ check: responseJson });
-					if (this.state.check > 0) {
-						this.props.navigation.navigate("TabNavigator");
-
-					}
-					else {
-						Alert.alert("Thông tin tài khoản chưa chính xác!!!")
-					}
-				})
+				body: JSON.stringify({username: this.state.username, password: this.state.password})
+			});
+			const data = await response.json();
+			if(data > 0){
+				await AsyncStorage.setItem('user', this.state.username);
+				this.props.navigation.navigate("TabNavigator")
+			}
+			else{
+				Alert.alert("Thông tin tài khoản chưa chính xác!!!")
+			}
 		}
 			
 

@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, 
 	TouchableWithoutFeedback, StatusBar,
 	TextInput, SafeAreaView, Keyboard, TouchableOpacity,
-	KeyboardAvoidingView, Item, Platform, ImageBackground } from 'react-native';
+	KeyboardAvoidingView, Item, Platform, ImageBackground, AsyncStorage } from 'react-native';
 import { ListItem, Image } from 'react-native-elements';
+import { user } from '../data/data';
+
 
 const drawerCover = require("../icons/cover-personal.jpeg");
 
@@ -27,7 +29,7 @@ const list = [
 	  },
   ];
 
-export default class Login extends Component {
+export default class Personal extends Component {
 	constructor(props) {
 		super(props);
 
@@ -36,8 +38,22 @@ export default class Login extends Component {
 		};
 
 	}
-	
-	render() {
+	async UNSAFE_componentWillMount(){
+		const user = await AsyncStorage.getItem('user');
+		console.log(user)
+	}
+
+
+	render() {    
+
+	if (this.state.isFetching){
+		return (
+		<SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+		<ActivityIndicator size='large' color='#0D47A1' />
+		</SafeAreaView>
+		);
+	}
+  const {navigate} = this.props.navigation;
 		// const {navigate} = this.props.navigation;
 		return (
 			<SafeAreaView style={{flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>

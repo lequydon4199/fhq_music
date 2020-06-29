@@ -175,9 +175,9 @@ export default class Player extends React.Component {
           <Text style={styles.nameSinger}>{this.state.CurrentPlayArtist}</Text>
         </View>
         <View style={styles.image}>
-          <Image source={this.state.CurrentPlayImage} style={styles.imageSong}></Image>
+          {/* <Image source={this.state.CurrentPlayImage} style={styles.imageSong}></Image> */}
           
-           {/* <AnimationArtWork CurrentPlayImage={this.state.CurrentPlayImage} styles={styles.imageSong} playing={this.state.playerState === 3} /> */}
+          <AnimationArtWork CurrentPlayImage={this.state.CurrentPlayImage} styles={styles.imageSong} playing={this.state.playerState === 3} />
         </View>
         <View style={styles.taskBar}>
           <TouchableOpacity>

@@ -52,7 +52,7 @@ class AnimationArtWork extends React.PureComponent {
 
     return (
       <Animated.Image rounded
-                      source={{ uri: this.props.CurrentPlayImage }}
+                      source={this.props.CurrentPlayImage }
                       style={[this.props.styles, { transform: [{ rotate: RotateData }] }]}
       />
     )

@@ -3,6 +3,7 @@ import { FlatList, View, Text, Image, TouchableOpacity } from 'react-native';
 import  * as Animatable from 'react-native-animatable';
 import styles from './ComponentStyles/ListSongs';
 import SongOption from './SongOption';
+import { Alert } from 'react-native';
 import {
   Menu,
   MenuOptions,
@@ -46,7 +47,7 @@ export default class ListSongs extends React.Component {
     // this.props.navigate("Player", {playlist: this.state.playlist[index] , continue: "false"})
     // TrackPlayer.reset();
     TrackPlayer.add( this.state.playlist[index] )
-
+    Alert.alert("Thêm vào playlist thành công!")
     // this.props.navigate("Player") //, index: index, status: "Song"});
   }
   renderItem = ({item, index}) => {
