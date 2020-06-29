@@ -19,43 +19,51 @@ class AnimationArtWork extends React.PureComponent {
     this._isMounted = false;
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this._isMounted = true;
     this.startImageRotateFunction();
+ 
 
   };
+
 
   startImageRotateFunction() {
     this.RotateValueHolder.setValue(0);
     Animated.timing(this.RotateValueHolder, {
       toValue: 1,
-      duration: 6000,
+      duration: 50000,
       easing: Easing.linear,
-      useNativeDriver: true
+      useNativeDriver: false
     }).start(() => {
-
-          this.startImageRotateFunction();
-
+        this.startImageRotateFunction();
       }
     );
   }
 
 
   render() {
-    console.log(this.props.playing);
+    // console.log((this.props.playing));
     const RotateData = this.RotateValueHolder.interpolate({
       inputRange: [0, 1],
       outputRange: ["0deg", "360deg"]
     });
 
 
+    // if(this.props.playing == true){
+    //   Animated.timing(
+    //     this.RotateValueHolder
+    //   ).stop();
+      
+    // }
+    // else{
+      return (
+        <Animated.Image rounded
+                        source={this.props.CurrentPlayImage }
+                        style={[this.props.styles, { transform: [{ rotate: RotateData }] }]}
+        />
+      )
+    // }
 
-    return (
-      <Animated.Image rounded
-                      source={this.props.CurrentPlayImage }
-                      style={[this.props.styles, { transform: [{ rotate: RotateData }] }]}
-      />
-    )
   }
 }
 

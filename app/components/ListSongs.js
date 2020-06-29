@@ -124,7 +124,7 @@ export default class ListSongs extends React.Component {
     //   this.state.playlist = songs.sort((a, b) => b.latestListening - a.latestListening);
     // }
     this.state.playlist = this.props.data
-    console.log(this.state.playlist)
+    
     return (
       <FlatList
         data = {this.props.data}

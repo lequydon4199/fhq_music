@@ -92,7 +92,6 @@ export default class PlaylistComponent extends React.Component {
     }
 
     render() {
-        console.log(this.state.data)
         const {navigate} = this.props.navigation;
         return(
         <React.Fragment>

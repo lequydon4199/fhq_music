@@ -14,13 +14,14 @@ export default StyleSheet.create({
         marginTop: device.height * 0.01,
         marginLeft: device.width * 0.02,
         width:30,
-				height:30
+        height:30,
+        color: 'white'
       },
       song: {
         marginTop: device.height * 0.012,
         marginLeft: device.width * 0.02,
         fontSize: device.height * 0.03,
-        color: '#2e2d2b',
+        color: 'white',
         fontWeight: 'bold',
         fontSize: 24
       },
@@ -28,8 +29,9 @@ export default StyleSheet.create({
         marginLeft: device.width * 0.103,
       },
       nameSinger: {
-        color: '#2e2d2b',
-        fontSize: device.height * 0.025
+        color: 'white',
+        fontSize: device.height * 0.025,
+        marginLeft:device.width * 0.019,
       }, 
       image: {
         alignContent: 'center',
@@ -39,14 +41,16 @@ export default StyleSheet.create({
         
       },
       imageSong: {
-        
+        marginTop: - device.height * 0.01,
+        marginLeft: -device.width * 0.05,
         height: device.width * 0.85,
-        width: device.width * 0.74,
-        borderTopLeftRadius:5,
-        borderTopRightRadius:5,
-        borderBottomLeftRadius:5,
-        borderBottomRightRadius:5,
+        width: device.width * 0.85,
+        // borderTopLeftRadius:5,
+        // borderTopRightRadius:5,
+        // borderBottomLeftRadius:5,
+        // borderBottomRightRadius:5,
         justifyContent:'center',
+        borderRadius: device.height*0.85*0.5
         
         
       },
