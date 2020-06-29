@@ -1,83 +1,114 @@
-import React from 'react';
-import { SafeAreaView, View, Text, StatusBar, Image, TouchableOpacity, Platform } from 'react-native';
-import { ListItem, Button } from 'react-native-elements'
-import styles from '../styles/Personal';
-import { list, user, songs } from '../data/data';
-import MiniPlayer from '../components/MiniPlayer';
-import ListSongs from '../components/ListSongs';
-import TrackPlayer, {ProgressComponent} from 'react-native-track-player';
+import React, { Component } from 'react'
+import { StyleSheet, Text, View, 
+	TouchableWithoutFeedback, StatusBar,
+	TextInput, SafeAreaView, Keyboard, TouchableOpacity,
+	KeyboardAvoidingView, Item, Platform, ImageBackground } from 'react-native';
+import { ListItem, Image } from 'react-native-elements';
+
+const drawerCover = require("../icons/cover-personal.jpeg");
 
 
+const list = [
+    {
+      title: 'Thông tin cá nhân',
+      icon: 'person',
+    },
+    {
+      title: 'Playlist của tôi',
+      icon: 'queue-music',
+    },
+    {
+      title: 'Gửi thông báo',
+      icon: 'near-me',
+	},
+	{
+		title: 'Đăng xuất',
+		icon: 'exit-to-app',
+	  },
+  ];
 
+export default class Login extends Component {
+	constructor(props) {
+		super(props);
 
-export default class Personal extends React.Component {
-  logout(){
-    AsyncStorage.removeItem('user');
-    this.props.setUser(defaultUser);
+		this.state = {
 
-    TrackPlayer.destroy()
-    this.props.navigation.navigate("Login")
-  }
-  render(){
-    const {navigate} = this.props.navigation;
-    return(
-      <SafeAreaView style={{flex: 1, backgroundColor: '#0D47A1', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
-        <View style={styles.container}>
-          <View style={{flex: 1}}>
-            <StatusBar barStyle="default" translucent/>
-            <View style={styles.titleTextContainer}>
-              <Text style={styles.titleText}>Cá nhân</Text>
-            </View>
-            <View style={{flexDirection: 'row', backgroundColor: 'white', marginBottom: 10}}>
-              {/* <SearchBar navigation={this.props.navigation}/> */}
-              <View>
-                <Image style={{height: 80, width: 80, margin: 15, borderRadius: 40}} source={{uri: user.avatar}}/>
-              </View>
-              <View style={{justifyContent: "center"}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Username: {user.username}</Text>
-                <Text style={{marginVertical: 3}}>Nickname: {user.nickname}</Text>
-                <Button 
-                  containerStyle={{marginTop: 5}}
-                  titleStyle={{fontSize: 14}}
-                  buttonStyle={{padding: 5, width: 80, borderRadius: 5}}
-                  title='Đăng xuất' 
-                  onPress={() => this.logout()} 
-                />
-              </View>
-            </View>
-            <View style={{backgroundColor: 'white', marginBottom: 10}}>
-            {list.map((item, i) => {
-              return (
-                <View key={i} >
-                  <TouchableOpacity 
-                    onPress={()=> navigate('Player', {playlist: TrackPlayer.getQueue() , continue: "true"})}
-                    activeOpacity={0.3}
-                  >
-                    <ListItem
-                      key={i}
-                      title={item.title}
-                      leftIcon={{ name: item.icon }}
-                      bottomDivider
-                      chevron
-                    />
-                  </TouchableOpacity>
-                </View>  
-              )
-            })}
-            </View>
-            <View style={{backgroundColor: 'white', flex: 1}}>
-              <ListItem
-                title='Lịch sử'
-                leftIcon={{name: 'history'}}
-              />
-              <View style={{flex: 1}}>
-                <ListSongs type="history" navigate={navigate}/>
-              </View>
-            </View>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
+		};
+
+	}
+	
+	render() {
+		// const {navigate} = this.props.navigation;
+		return (
+			<SafeAreaView style={{flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
+				<StatusBar barStyle="default" translucent/>
+					<View style={styles.container}>
+						
+                    <ImageBackground source={drawerCover} style={styles.top}>
+
+						<Image style={styles.imageStyle}
+								source={{uri: 'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png'}}>
+						</Image>
+
+						<Text style={styles.text}>Lê Quý Đôn</Text>
+
+						<Text style={{fontSize: 16, marginHorizontal: 20, marginTop: 8, color: 'white'}}>lequydon4199@gmail.com</Text>
+
+                    </ImageBackground>
+					
+					<View style={styles.mid}>
+						
+						{
+							list.map((item, i) => (
+							<ListItem
+								key={i}
+								title={item.title}
+								leftIcon={{ name: item.icon }}
+								bottomDivider
+								chevron
+							/>
+							))
+						}
+
+					</View>
+
+					</View>
+			</SafeAreaView>
+		)
+	}
 }
-
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'stretch',   
+	},
+	top: {
+		flex: 3,
+		flexDirection: 'column',
+		// justifyContent: 'center',
+        // alignItems: 'center',
+        // backgroundColor: 'red',
+        alignSelf: "stretch",
+	},
+	mid: {
+		flex: 6,
+		flexDirection: 'column',
+		// justifyContent: 'flex-start',
+		// alignItems: 'center',
+	},
+	text: {
+		fontSize: 32,
+		marginHorizontal: 20,
+		marginTop: 8,
+		color: 'white'
+	},
+	imageStyle: {
+		width: 70, 
+		height: 70,
+		marginHorizontal: 20,
+		marginTop: 90
+	},
+	
+});
