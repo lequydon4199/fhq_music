@@ -19,36 +19,8 @@ export default class PlaylistComponent extends React.Component {
         songs: [],
         isFetching: true,
         noData: false,
-        // a: this.props.route.params.type
     }
 
-    // async UNSAFE_componentWillMount(){
-    //     let songs = [];
-    //     if (this.props.route.params.type === 'playlist'){
-    //         songs = this.props.route.params.data.songs;
-    //     } else {
-    //         let response = null;
-    //         if (this.props.route.params.type === 'singer'){
-    //             response = await fetch(`http://192.168.1.253:5000/ca_si/${this.props.route.params.data.id}`);
-    //         } else if (this.props.route.params.type === 'topic'){
-    //             response = await fetch(`https://toeic-test-server.herokuapp.com/music/song/topic/${this.props.route.params.data.name}`); 
-    //         }
-    //         const data = await response.json();
-    //         songs = data;
-            
-    //     }
-    //     if (songs.length > 0){
-    //         this.setState({
-    //             data: songs,
-    //             isFetching: false
-    //         });
-    //     } else {
-    //         this.setState({
-    //             isFetching: false,
-    //             noData: true,
-    //         });
-    //     }
-    // }
     async UNSAFE_componentWillMount() {
         let songs = [];
         if (this.props.route.params.type === 'playlist'){
@@ -120,7 +92,6 @@ export default class PlaylistComponent extends React.Component {
     }
 
     render() {
-        // console.log(Number((this.state.data).length) === Number(0))
         console.log(this.state.data)
         const {navigate} = this.props.navigation;
         return(

@@ -48,12 +48,14 @@ componentDidMount() {
                 itemPictureStyle={styles.suggestPicture}
                 itemNameStyle={styles.suggestText}
                 itemStyle={styles.suggestStyle}
+                navigate={this.props.navigation.navigate}
               />
               <Item 
                 category="Playlist"
                 data={this.state.playlist}
                 horizontal={true}
                 scrollEnabled={false}
+                pagingEnabled={false}
                 navigate={this.props.navigation.navigate}
                 type = 'playlist'
               />
@@ -62,6 +64,7 @@ componentDidMount() {
                 data={this.state.singer}
                 horizontal={true}
                 scrollEnabled={true}
+                pagingEnabled={false}
                 itemPictureStyle={styles.singerPictureStyle}
                 itemStyle={styles.singerStyle}
                 navigate={this.props.navigation.navigate}
@@ -71,6 +74,7 @@ componentDidMount() {
                 category="Chủ đề"
                 data={this.state.the_loai}
                 horizontal={true}
+                pagingEnabled={false}
                 navigate={this.props.navigation.navigate}
                 type = 'the_loai'
               />
