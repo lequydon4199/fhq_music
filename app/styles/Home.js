@@ -32,9 +32,15 @@ export default StyleSheet.create({
     borderRadius: device.height*0.13*0.5
   },
   singerStyle: {
-    marginLeft: (device.width-device.height*0.13*3)/4
+    marginLeft: (device.width-device.height*0.13*3)/4,
   },
   suggestStyle: {
    marginLeft: 0 
+  },
+  singerName: {
+    paddingTop: 3,
+    width: device.height*0.13,
+    textAlign: 'center'
+    
   }
 });

@@ -27,6 +27,7 @@ export default StyleSheet.create({
   },
   itemName: {
     paddingTop: 3,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    width: device.width*0.28,
   }
 });

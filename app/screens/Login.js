@@ -5,11 +5,14 @@ import { StyleSheet, Text, View, Image,
 	KeyboardAvoidingView, Item, Platform,AsyncStorage } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Alert } from 'react-native';
+import { setUser } from '../actions/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 
 
 
-export default class Login extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props);
 
@@ -41,8 +44,10 @@ export default class Login extends Component {
 				body: JSON.stringify({username: this.state.username, password: this.state.password})
 			});
 			const data = await response.json();
-			if(data > 0){
+			// console.log(data)
+			if(data != 0){
 				await AsyncStorage.setItem('user', this.state.username);
+				this.props.setUser(data);
 				this.props.navigation.navigate("TabNavigator")
 			}
 			else{
@@ -122,6 +127,13 @@ export default class Login extends Component {
 		)
 	}
 }
+
+const mapDispatchToProps = (dispatch) => ({
+	setUser: bindActionCreators(setUser, dispatch)
+  });
+  
+  export default connect(null, mapDispatchToProps)(Login);
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

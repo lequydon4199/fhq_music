@@ -1,3 +1,4 @@
+ 
 import React from 'react';
 import { View, Text, Image, ScrollView, Keyboard,TouchableOpacity, AsyncStorage } from 'react-native';
 import styles from './ComponentStyles/Item';
@@ -23,6 +24,7 @@ export default class Item extends React.Component {
           horizontal={this.props.horizontal}
           onScroll={Keyboard.dismiss}
           scrollEventThrottle={0}
+          showsHorizontalScrollIndicator={this.props.showsHorizontalScrollIndicator}
           pagingEnabled={this.props.pagingEnabled}
           scrollEnabled={this.props.scrollEnabled}
         >
@@ -32,7 +34,7 @@ export default class Item extends React.Component {
                 <Image style={[styles.itemPicture, this.props.itemPictureStyle]} source={{
                   uri: item.picture,
                 }}/>
-                <Text style={[styles.itemName, this.props.itemNameStyle]}>{item.name}</Text>
+                <Text style={[styles.itemName, this.props.itemNameStyle]} numberOfLines={1} ellipsizeMode= "tail">{item.name}</Text>
               </View>
             </TouchableOpacity>
           ))}

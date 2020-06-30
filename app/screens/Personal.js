@@ -13,8 +13,13 @@ import {
   Item,
   Platform,
   ImageBackground,
+  AsyncStorage
 } from 'react-native';
 import {ListItem, Image} from 'react-native-elements';
+import { defaultUser } from '../data/data';
+import { setUser } from '../actions/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const drawerCover = require('../icons/cover-personal.jpeg');
 
@@ -29,22 +34,29 @@ const list = [
   },
 ];
 
-export default class Personal extends Component {
+class Personal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isFetching: true,
+      activeUser:[]
     };
   }
-//   setSelection = (value) => {
-//     // console.log(value)
-//     this.setState({isFetching: !value});
-//   };
-
+  
+logout = async () =>{
+  AsyncStorage.removeItem('user');
+  this.props.navigation.navigate("TabNavigator");
+  this.props.setUser(defaultUser);
+  this.setState({
+    isFetching: false,
+  }
+    
+  )
+}
   render() {
     const {navigate} = this.props.navigation;
-    if (this.state.isFetching) {
+    if (this.props.user.username != '' ) {
       return (
         <SafeAreaView
           style={{
@@ -54,13 +66,6 @@ export default class Personal extends Component {
           <StatusBar barStyle="default" translucent />
           <View style={styles.container}>
             <ImageBackground source={drawerCover} style={styles.top}>
-              {/* <Image
-                style={styles.imageStyle}
-                source={{
-                  uri:
-                    'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
-                }}></Image> */}
-
               <Text
                 style={{
                   fontSize: 32,
@@ -68,7 +73,7 @@ export default class Personal extends Component {
                   marginTop: 130,
                   color: 'white',
                 }}>
-                Lê Quý Đôn
+                {this.props.user.username}
               </Text>
 
               <Text
@@ -78,20 +83,11 @@ export default class Personal extends Component {
                   marginTop: 8,
                   color: 'white',
                 }}>
-                lequydon4199@gmail.com
+                {this.props.user.username}
               </Text>
             </ImageBackground>
 
             <View style={styles.mid}>
-              {/* {list.map((item, i) => (
-              <ListItem
-                key={i}
-                title={item.title}
-                leftIcon={{name: item.icon}}
-                bottomDivider
-                chevron
-              />
-            ))} */}
               <View>
                 <TouchableOpacity
                   onPress={() =>
@@ -113,10 +109,8 @@ export default class Personal extends Component {
               <View>
                 <TouchableOpacity
                   onPress={() =>
-                    navigate('Login', {
-                      title: list[1].title,
-                      type: list[1].type,
-                    })
+                    this.logout()
+                    
                   }
                   activeOpacity={0.3}>
                   <ListItem
@@ -141,22 +135,6 @@ export default class Personal extends Component {
           <StatusBar barStyle="default" translucent />
           <View style={styles.container}>
             <ImageBackground source={drawerCover} style={styles.top}>
-              {/* <Image
-                style={styles.imageStyle}
-                source={{
-                  uri:
-                    'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
-                }}></Image>
-              <Text style={styles.text}>Lê Quý Đôn</Text>
-              <Text
-                style={{
-                  fontSize: 16,
-                  marginHorizontal: 20,
-                  marginTop: 8,
-                  color: 'white',
-                }}>
-                lequydon4199@gmail.com
-              </Text> */}
             </ImageBackground>
 
             <View
@@ -188,6 +166,17 @@ export default class Personal extends Component {
     }
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: bindActionCreators(setUser, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Personal);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -198,16 +187,11 @@ const styles = StyleSheet.create({
   top: {
     flex: 3,
     flexDirection: 'column',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: 'red',
     alignSelf: 'stretch',
   },
   mid: {
     flex: 6,
     flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
   },
   text: {
     fontSize: 32,
