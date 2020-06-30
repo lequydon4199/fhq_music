@@ -12,31 +12,22 @@ import {
 } from 'react-native-popup-menu';
 import { Icon } from 'react-native-elements';
 import { device } from '../config/ScreenDimensions';
-// import { songs } from '../data/data';
 import TrackPlayer from '../trackPlayer/index'
-export default class ListSongs extends React.Component {
+import { setUser } from '../actions/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// import { Alert } from 'react-native';
+
+class ListSongs extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  
   state = {
     playlist: [],
-    // songs : this.props.route.params.data
   }
 
-  // getDayOffset = time => {
-  //   const timeOffset = ((Date.now()) - time)/1000;
-  //   if (timeOffset < 86400) {
-  //     return 'Hôm nay';
-  //   } else if (timeOffset < 172800){
-  //     return 'Hôm qua';
-  //   } else if (timeOffset < 259200){
-  //     return 'Hôm kia';
-  //   } else if (timeOffset < 604800){
-  //     return `${Math.floor(timeOffset/86400)} ngày trước`
-  //   } else if (timeOffset < 2592000){
-  //     return `${Math.floor(timeOffset/604800)} tuần trước`
-  //   } else return new Date(time).toLocaleString();
-  // }
-
   playSong = index => {
-    // this.props.navigate("Player", {playlist: this.state.playlist[index] , continue: "false"})
     TrackPlayer.reset();
     TrackPlayer.add( this.state.playlist[index] )
 
@@ -44,33 +35,61 @@ export default class ListSongs extends React.Component {
   }
   
   addToPlaylist = index => {
-    // this.props.navigate("Player", {playlist: this.state.playlist[index] , continue: "false"})
-    // TrackPlayer.reset();
     TrackPlayer.add( this.state.playlist[index] )
-    Alert.alert("Thêm vào playlist thành công!")
-    // this.props.navigate("Player") //, index: index, status: "Song"});
+    Alert.alert("Thêm vào playlist thành công!",)
   }
+
+  addToFavorite = async (index) =>{
+    if (this.props.user.username == '' ){
+      Alert.alert("Bạn chưa đăng nhập vui lòng đăng nhập!")
+    }
+    else{
+      const response = await fetch(`https://fhq-music-app.herokuapp.com/addfavorite`,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({userId: this.props.user.id, songId: this.state.playlist[index].id})
+        });
+        const result = await response.json();
+        console.log(result)
+        if(result != 0){
+          this.props.setUser(result)
+          Alert.alert("Thêm vào danh sách yêu thích thành công!")
+        }
+        else{
+          Alert.alert("Bài hát đã có trong danh sách yêu thích!")
+        }
+
+    }
+  }
+    deleteFavorite = async (index) =>{
+      const response = await fetch(`https://fhq-music-app.herokuapp.com/deletefavorite`,{
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({userId: this.props.user.id, songId: this.state.playlist[index].id})
+          });
+      const result = await response.json();
+      this.props.setUser(result)
+      
+      Alert.alert("Xoá bài hát yêu thích thành công!")
+      }
+
+
+
   renderItem = ({item, index}) => {
-    // let itemDayOffset = this.getDayOffset(item.latestListening);
-    // let showDayOffset = false;
-    // if ((this.props.type==='history')&&(itemDayOffset!==this.state.dayOffset)){
-    //   showDayOffset = true;
-    //   this.state.dayOffset = itemDayOffset;
-    // }
-    
+    console.log(this.props.favorite)
     return(
       <View>
-        {/* {showDayOffset ?
-        <View style={styles.dayOffsetContainer}>
-          <Text style={styles.dayOffset}>{itemDayOffset}</Text>
-        </View> : 
-        null } */}
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
             this.playSong(index);
-            // item.latestListening = new Date().getTime();
-            // this.setState({dayOffset: ''});
+
           }}  
         >
         <View style={styles.container}>
@@ -79,16 +98,9 @@ export default class ListSongs extends React.Component {
             <View style={styles.songNameContainer}>
               <Text style={styles.songName}>{item.title}</Text>
             </View>
-            {/* {item.artist.map((item, index) => ( */}
             <View style={styles.singerContainer}>
               <Text style={styles.singer}>{item.artist}</Text>
             </View>
-            {/* ))} */}
-            {/* {this.props.type==='favorite' ? 
-            <View style={styles.favoriteIcon}>
-              <Icon name="favorite" size={device.width*0.08} color='#D50000'/>
-            </View> : 
-            null} */}
           </View>
           <View style={styles.optionIcon}>
           <Menu>
@@ -96,9 +108,21 @@ export default class ListSongs extends React.Component {
                 <Icon name="more-vert" size={30} />
                 </MenuTrigger>
                 <MenuOptions optionsContainerStyle={{width: 200, borderRadius: 5}}>
-                <MenuOption onSelect={() => this.addToFavorite()} style={styles.menuOption}>
+                {/* <MenuOption onSelect={() => this.addToFavorite(index)} style={styles.menuOption}>
                     <Icon name="favorite" color="red"/><Text> Yêu thích</Text>
-                </MenuOption>
+                </MenuOption> */}
+                
+                {   
+                          this.props.favorite? 
+                          <MenuOption onSelect={() => this.deleteFavorite(index)} style={styles.menuOption}>
+                            <Icon name="favorite-border" color="black"/><Text> Xóa yêu thích</Text>
+                          </MenuOption>
+                          :
+                          <MenuOption onSelect={() => this.addToFavorite(index)} style={styles.menuOption}>
+                            <Icon name="favorite" color="red"/><Text> Yêu thích</Text>
+                          </MenuOption>
+                            
+                }
                 <MenuOption onSelect={() => this.addToPlaylist(index)} style={styles.menuOption}>
                     <Icon name="playlist-add" /><Text> Thêm vào playlist</Text>
                 </MenuOption>
@@ -112,17 +136,6 @@ export default class ListSongs extends React.Component {
   }
 
   render(){
-    // if (this.props.type === 'songs'){
-    //   this.state.playlist = songs.sort((a, b) => {
-    //     let nameA = a.title.toUpperCase();
-    //     let nameB = b.title.toUpperCase();
-    //     return nameA.localeCompare(nameB);
-    //   });
-    // } else if (this.props.type === 'favorite') {
-    //   this.state.playlist = songs.filter(item => item.favorite==1)
-    // } else if (this.props.type === 'history') {
-    //   this.state.playlist = songs.sort((a, b) => b.latestListening - a.latestListening);
-    // }
     this.state.playlist = this.props.data
     
     return (
@@ -135,3 +148,12 @@ export default class ListSongs extends React.Component {
     )
   }
 }
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: bindActionCreators(setUser, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListSongs);

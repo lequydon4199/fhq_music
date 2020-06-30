@@ -4,9 +4,21 @@ import ListSongs from '../components/ListSongs';
 import styles from '../styles/SongList';
 import Header from '../components/Header';
 import MiniPlayer from '../components/MiniPlayer';
+import { setUser } from '../actions/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-export default class SongList extends React.Component {
+class SongList extends React.Component {
+  constructor(props) {
+    super(props);
+}
+
+// state = {
+//     data: this.props.route.params.data,
+//     favorite: this.props.route.params.favorite
+// }
   render(){
+
     const routeParams = this.props.route.params;
     const {navigate} = this.props.navigation;
     return(
@@ -21,7 +33,7 @@ export default class SongList extends React.Component {
                 centerText={routeParams.title}
               />
               <View style={styles.songContainer}>
-                <ListSongs type={routeParams.type} navigate={navigate}/>
+                <ListSongs data = {this.props.user.favorite} favorite = {true} type={routeParams.type} navigate={navigate}/>
               </View>
             </View>
             {/* <MiniPlayer navigate={navigate}/> */}
@@ -31,3 +43,12 @@ export default class SongList extends React.Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: bindActionCreators(setUser, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SongList);

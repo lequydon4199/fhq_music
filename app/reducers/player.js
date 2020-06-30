@@ -61,6 +61,6 @@ function player(state = null, action) {
     } 
     return state;
   }
-  
+
   export {player, updateSong, user}
   

@@ -40,7 +40,8 @@ class Personal extends Component {
 
     this.state = {
       isFetching: true,
-      activeUser:[]
+      activeUser:[],
+      data: []
     };
   }
   
@@ -54,6 +55,19 @@ logout = async () =>{
     
   )
 }
+
+
+favorite = async () => {
+  this.props.navigation.navigate('SongList'
+  ,{    
+    title: list[0].title,
+    type: list[0].type
+    // data: this.props.user.favorite,
+    // favorite: true
+  }
+  );
+}
+
   render() {
     const {navigate} = this.props.navigation;
     if (this.props.user.username != '' ) {
@@ -91,11 +105,7 @@ logout = async () =>{
               <View>
                 <TouchableOpacity
                   onPress={() =>
-                    navigate('SongList', {
-                      title: list[0].title,
-                      type: list[0].type,
-                      data: this.props.data,
-                    })
+                    this.favorite()
                   }
                   activeOpacity={0.3}>
                   <ListItem

@@ -104,7 +104,9 @@ const playListData = [
   const defaultUser = {
     id: 0,
     email: '',
-    username: ''
+    username: '',
+    favorite: []
   }
+
   
   export {playListData, topicData, forYou, list, songs, defaultUser, user}
