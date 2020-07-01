@@ -37,18 +37,7 @@ class Player extends React.Component {
     favorite: false
   };
 
-  UNSAFE_componentWillMount() {
-    if (this.props.user.username != '' ){
-      for (var i = 0; i < this.props.user.favorite.length; i++){
-        if (this.props.user.favorite[i].id == this.props.player.id){
-          this.setState({
-            favorite: true
-          })
-        }
-      }
-    }
-    
-
+  UNSAFE_componentWillMount() {  
       TrackPlayer.play();
   }
 
@@ -110,6 +99,18 @@ class Player extends React.Component {
 
     var track = await TrackPlayer.getTrack(current_id);
     console.log(track.id)
+    this.setState({
+      favorite: false
+    })
+    if (this.props.user.username != '' ){
+      for (var i = 0; i < this.props.user.favorite.length; i++){
+        if (this.props.user.favorite[i].id == this.props.player.id){
+          this.setState({
+            favorite: true
+          })
+        }
+      }
+    }
     try {
         this.props.setSong(track.id, track.title, track.artist, track.artwork)
     } catch (error) {
@@ -177,7 +178,9 @@ class Player extends React.Component {
     }
   }
   render() {
+   
     return (
+      
       <SafeAreaView
         style={{
           flex: 1,

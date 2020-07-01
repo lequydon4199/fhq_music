@@ -23,14 +23,39 @@ class ListSongs extends React.Component {
   }
   
   state = {
-    playlist: [],
+    playlist: this.props.data,
+    noData: true
   }
+  componentDidMount(){
+    if(this.state.playlist == ''){
+      this.setState({
+        noData: false
+      })
+    }
+  }
+  playAllSong = () => {
 
+    TrackPlayer.destroy();
+    try {
+      TrackPlayer.add( this.state.playlist)
+      this.props.setSong(this.state.playlist[0].id, this.state.playlist[0].title, this.state.playlist[0].artist, this.state.playlist[0].artwork)
+      this.props.navigate("Player") 
+    } catch (error) {
+      Alert.alert("Playlist đang được phát",)
+    }
+   
+    
+    
+    
+  }
+  
   playSong = index => {
 
     TrackPlayer.destroy();
-    TrackPlayer.add( this.state.playlist[index] )
+    TrackPlayer.add( this.state.playlist[index])
     this.props.setSong(this.state.playlist[index].id, this.state.playlist[index].title, this.state.playlist[index].artist, this.state.playlist[index].artwork)
+    
+    
     this.props.navigate("Player") 
   }
   
@@ -91,6 +116,7 @@ class ListSongs extends React.Component {
 
           }}  
         >
+          
         <View style={styles.container}>
           <Image style={styles.image} source = {{uri: item.artwork}}/>
           <View style={styles.songInfoContainer}>
@@ -123,7 +149,7 @@ class ListSongs extends React.Component {
                             
                 }
                 <MenuOption onSelect={() => this.addToPlaylist(index)} style={styles.menuOption}>
-                    <Icon name="playlist-add" /><Text> Thêm vào playlist</Text>
+                    <Icon name="playlist-add" /><Text> Phát Sau</Text>
                 </MenuOption>
                 </MenuOptions>
             </Menu>
@@ -135,7 +161,7 @@ class ListSongs extends React.Component {
   }
 
   render(){
-    this.state.playlist = this.props.data
+    // this.state.playlist = this.props.data
     
     return (
     //   <View><TouchableOpacity
@@ -148,13 +174,26 @@ class ListSongs extends React.Component {
       // <Text>Phát Tất cả</Text>
     // </TouchableOpacity>
     // </View>
-      
+    
+      <View>{this.state.noData?
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => {
+            this.playAllSong();
+
+          }}  
+        >
+          <Text>Phát Tất cả</Text>
+        </TouchableOpacity>:null
+        }
+            
       <FlatList
         data = {this.props.data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={this.renderItem}
         style={styles.flatList}
       />
+      </View>
     )
   }
 }
