@@ -28,6 +28,7 @@ class ListSongs extends React.Component {
   }
 
   playSong = index => {
+    
     TrackPlayer.reset();
     TrackPlayer.add( this.state.playlist[index] )
 

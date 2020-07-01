@@ -41,7 +41,7 @@ export default class SearchBar extends React.Component {
   };
   render(){
     const {searchText} = this.state;
-    console.log(this.state.searchedSong)
+    // console.log(this.state.searchedSong)
     return(
       <View style={styles.container}>
         <View style={[styles.searchBarContainer, this.props.style]}>

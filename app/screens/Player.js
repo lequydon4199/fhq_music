@@ -20,11 +20,14 @@ import styles from '../styles/Player';
 import {Icon} from 'react-native-elements';
 import PropTypes from 'prop-types';
 import TrackPlayer, {ProgressComponent} from 'react-native-track-player';
-import {connect} from 'react-redux';
 import AnimationArtWork from '../components/AnimationArtwork';
+import { setUser } from '../actions/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Alert } from 'react-native';
 TrackPlayer.setupPlayer();
 
-export default class Player extends React.Component {
+class Player extends React.Component {
   constructor(props) {
     super(props);
     //
@@ -41,6 +44,8 @@ export default class Player extends React.Component {
     CurrentPlayTitle: '',
     CurrentPlayArtist: '',
     CurrentPlayImage: '',
+    CurrentPlayID: '',
+    favorite: false
   };
 
   UNSAFE_componentWillMount() {
@@ -129,14 +134,26 @@ export default class Player extends React.Component {
 
   UpdateTrack = async () => {
     // if(this.status == "Playlist"){
+
     var current_id = await TrackPlayer.getCurrentTrack();
     if (current_id) {
       var track = await TrackPlayer.getTrack(current_id);
-
+      this.setState({
+        favorite: false
+      })
+      for (var i = 0; i < this.props.user.favorite.length; i++){
+        // look for the entry with a matching `code` value
+        if (this.props.user.favorite[i].id == current_id){
+          this.setState({
+            favorite: true
+          })
+        }
+      }
       this.setState({
         CurrentPlayTitle: track.title,
         CurrentPlayArtist: track.artist,
         CurrentPlayImage: {uri: track.artwork},
+        CurrentPlayID: track.id
       });
     } else {
       this.setState({
@@ -166,6 +183,57 @@ export default class Player extends React.Component {
     }
   };
 
+  addToFavorite = async () =>{
+    
+    if (this.props.user.username == '' ){
+      Alert.alert("Bạn chưa đăng nhập vui lòng đăng nhập!")
+    }
+    else{
+      if (this.state.favorite == false){
+        this.setState({
+          favorite: true
+        })
+        const response = await fetch(`https://fhq-music-app.herokuapp.com/addfavorite`,{
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({userId: this.props.user.id, songId: this.state.CurrentPlayID})
+      });
+      const result = await response.json();
+      if(result != 0){
+          this.props.setUser(result)
+          // Alert.alert("Thêm vào danh sách yêu thích thành công!")
+      } 
+      }
+      else{
+        this.setState({
+          favorite: false
+        })
+        const response = await fetch(`https://fhq-music-app.herokuapp.com/deletefavorite`,{
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({userId: this.props.user.id, songId: this.state.CurrentPlayID})
+          });
+        const result = await response.json();
+        this.props.setUser(result)
+      }
+      
+        // // console.log(result)
+        // if(result != 0){
+        //   this.props.setUser(result)
+        //   Alert.alert("Thêm vào danh sách yêu thích thành công!")
+        // }
+        // else{
+        //   Alert.alert("Bài hát đã có trong danh sách yêu thích!")
+        // }
+
+    }
+  }
   render() {
     return (
       <SafeAreaView
@@ -201,9 +269,14 @@ export default class Player extends React.Component {
             <AnimationArtWork CurrentPlayImage={this.state.CurrentPlayImage} styles={styles.imageSong} playing={this.state.AudioStatus} />
           </View>
           <View style={styles.taskBar}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress = {() => this.addToFavorite()}>
               <Image
-                source={require('../icons/icon-like.png')}
+                source={
+                  this.state.favorite
+                    ? require('../icons/icon-like-pink.png')
+                    : require('../icons/icon-like.png')
+                }
+                
                 style={styles.favorite}
                 resizeMode="contain"
               />
@@ -335,3 +408,12 @@ class TrackStatus extends ProgressComponent {
     );
   }
 }
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: bindActionCreators(setUser, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
