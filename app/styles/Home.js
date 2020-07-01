@@ -9,11 +9,11 @@ export default StyleSheet.create({
     backgroundColor: '#eeeeee' 
   },
   scrollView: {
-    height: device.height*0.78,
+    height: device.height*0.75,
     backgroundColor: '#E0E0E0'
   },
   suggestArea: {
-    marginTop: device.height*0.01,
+    marginTop: device.height*0.001,
     height: device.height*0.38,
     width: device.width,
     backgroundColor: 'white'

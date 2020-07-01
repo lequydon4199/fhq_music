@@ -17,7 +17,7 @@ import store from './app/store/index';
 import PlaylistComponent from './app/components/PlaylistComponent';
 import { Image } from 'react-native';
 var AppIcon = require('./app/icons/AppIcon.png');
-
+import Search from './app/screens/Search';
 
 const Tab = createBottomTabNavigator();
 // const a =  AsyncStorage.getItem('artist')
@@ -78,6 +78,7 @@ function App() {
               }}
             /> }
             <Stack.Screen name="PlaylistComponent" component={PlaylistComponent}/>
+            <Stack.Screen name="Search" component={Search}/>
           </Stack.Navigator>
         </NavigationContainer>
       </MenuProvider>

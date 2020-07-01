@@ -15,18 +15,18 @@ export default class SearchBar extends React.Component {
       searchedSong: []
     }
   }
-  _pressRow = () => {
-    console.log("clicked")
-  }
-  updateSearch = searchText => {
-    this.setState({searchText})
-  }
-  searchedSong = (searchedText) => {
-    var searchedSong = playlist.filter(function(playlist) {
-      return playlist.title.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
-    });
-    this.setState({searchedSong: searchedSong});
-  };
+  // _pressRow = () => {
+  //   console.log("clicked")
+  // }
+  // updateSearch = searchText => {
+  //   this.setState({searchText})
+  // }
+  // searchedSong = (searchedText) => {
+  //   var searchedSong = playlist.filter(function(playlist) {
+  //     return playlist.title.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
+  //   });
+  //   this.setState({searchedSong: searchedSong});
+  // };
 
     renderSong = (playlist) => {
     return (
@@ -40,30 +40,31 @@ export default class SearchBar extends React.Component {
     );
   };
   render(){
-    const {searchText} = this.state;
+    // const {searchText} = this.state;
     // console.log(this.state.searchedSong)
     return(
       <View style={styles.container}>
         <View style={[styles.searchBarContainer, this.props.style]}>
-            <Icon  containerStyle={styles.searchIcon} name="search" size={screenHeight*0.04} color="gray"/>
-            <TextInput
+            {/* <Icon  containerStyle={styles.searchIcon} name="search" size={screenHeight*0.04} color="gray"/> */}
+            {/* <TextInput
               placeholder="Nhập tên bài hát"
               style={styles.searchInput}
               onChangeText={this.searchedSong}
               // value={searchText}
-            /> 
-              <ScrollView scrollsToTop={false}>
+            />  */}
+            <Text style={styles.titletext}>FHQ Music</Text>
+              {/* <ScrollView scrollsToTop={false}>
               <ListView
                     dataSource={ds.cloneWithRows(this.state.searchedSong)}
                     renderRow={this.renderSong} 
                     enableEmptySections={true}/>
-            </ScrollView>
+            </ScrollView> */}
   
             
         </View>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("Search")} style = {{backgroundColor:'#e6e6e6', borderRadius: 100}}>
           <View>
-            <Image style={styles.profileImage} source={{uri: 'https://thumbs.dreamstime.com/b/headphone-logo-design-template-headphone-logo-design-template-115058304.jpg'}}/>
+          <Icon  containerStyle={styles.searchIcon} name="search" size={screenHeight*0.04} color="gray"/>
           </View>
         </TouchableOpacity>
       </View>
