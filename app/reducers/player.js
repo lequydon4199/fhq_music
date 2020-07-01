@@ -1,10 +1,14 @@
 function player(state = null, action) {
     if (action.type === 'SET_SONG'){
       return {
-        ...state,
-        currentSong: action.currentSong,
-        position: action.position,
-        playlist: action.playlist
+        state,
+        id: action.id,
+        title: action.title,
+        artist: action.artist,
+        artwork: action.artwork
+        
+        // position: action.position,
+        // playlist: action.playlist
       }
     }
     return state;
@@ -51,6 +55,7 @@ function player(state = null, action) {
   
   // export {player, updateSong}
   import { defaultUser } from '../data/data';
+import { act } from 'react-test-renderer';
   
   function user(state = defaultUser, action) {
     if (action.type === 'SET_USER'){

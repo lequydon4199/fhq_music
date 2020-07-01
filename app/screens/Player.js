@@ -10,6 +10,7 @@ import {
   ScrollView,
   SafeAreaView,
   ImageBackground,
+  AsyncStorage
 } from 'react-native';
 import Slider from 'react-native-slider';
 import Moment from 'moment';
@@ -21,7 +22,7 @@ import {Icon} from 'react-native-elements';
 import PropTypes from 'prop-types';
 import TrackPlayer, {ProgressComponent} from 'react-native-track-player';
 import AnimationArtWork from '../components/AnimationArtwork';
-import { setUser } from '../actions/index';
+import { setUser, setSong } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Alert } from 'react-native';
@@ -30,52 +31,28 @@ TrackPlayer.setupPlayer();
 class Player extends React.Component {
   constructor(props) {
     super(props);
-    //
-    // this.playlist = this.props.route.params.playlist
-    // this.continue = this.props.route.params.countiue
-    // this.index = this.props.route.params.index
-    // this.isSeeking = false;
-    // this.shouldPlayAtEndOfSeek = false;
-    // this.continue = false;
-    // this.status = this.props.route.params.status
   }
   state = {
-    AudioStatus: true,
-    CurrentPlayTitle: '',
-    CurrentPlayArtist: '',
-    CurrentPlayImage: '',
-    CurrentPlayID: '',
+    AudioStatus: false,
     favorite: false
   };
 
   UNSAFE_componentWillMount() {
-    if ((this.countiue = 'false')) {
-      this.UpdateTrack();
-      // if(this.status == "Song"){
-      //   TrackPlayer.destroy()
-      //   TrackPlayer.add(this.playlist[this.index])
-      //   TrackPlayer.play()
-      // }
-      // else{
-      // TrackPlayer.destroy()
-
-      // TrackPlayer.add(this.playlist)
-      TrackPlayer.play();
+    if (this.props.user.username != '' ){
+      for (var i = 0; i < this.props.user.favorite.length; i++){
+        if (this.props.user.favorite[i].id == this.props.player.id){
+          this.setState({
+            favorite: true
+          })
+        }
+      }
     }
+    
+
+      TrackPlayer.play();
   }
 
-  async componentDidMount() {
-    // TrackPlayer.updateOptions({
-    //   stopWithApp: false,
-    //   capabilities: [
-    //     TrackPlayer.CAPABILITY_PLAY,
-    //     TrackPlayer.CAPABILITY_PAUSE,
-    //     TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-    //     TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-    //     TrackPlayer.CAPABILITY_STOP
-    //   ],
-    // });
-    this.UpdateTrackUI();
+  componentDidMount() {
     this.onTrackChange = TrackPlayer.addEventListener(
       'playback-track-changed',
       async (data) => {
@@ -89,23 +66,18 @@ class Player extends React.Component {
       },
     );
   }
+
   _goBack = () => {
     this.props.navigation.goBack();
   };
 
   togglePlayback = async () => {
-    // const currentTrack = await TrackPlayer.getCurrentTrack();
-    // if (currentTrack == null) {
-    //   TrackPlayer.reset();
-    //   await TrackPlayer.add(this.playlist);
-    //   TrackPlayer.play();
-    // } else {
+
     if ((await TrackPlayer.getState()) === 2) {
       TrackPlayer.play();
     } else {
       TrackPlayer.pause();
     }
-    // }
 
     this.UpdateTrackUI();
   };
@@ -117,8 +89,9 @@ class Player extends React.Component {
       console.log(error);
       TrackPlayer.stop();
     }
+    
     this.UpdateTrack();
-    this.UpdateTrackUI();
+    // this.UpdateTrackUI();
   };
 
   skipToPrevious = async () => {
@@ -129,42 +102,21 @@ class Player extends React.Component {
       console.log(error);
     }
     this.UpdateTrack();
-    this.UpdateTrackUI();
+    // this.UpdateTrackUI();
   };
 
   UpdateTrack = async () => {
-    // if(this.status == "Playlist"){
-
     var current_id = await TrackPlayer.getCurrentTrack();
-    if (current_id) {
-      var track = await TrackPlayer.getTrack(current_id);
-      this.setState({
-        favorite: false
-      })
-      for (var i = 0; i < this.props.user.favorite.length; i++){
-        // look for the entry with a matching `code` value
-        if (this.props.user.favorite[i].id == current_id){
-          this.setState({
-            favorite: true
-          })
-        }
-      }
-      this.setState({
-        CurrentPlayTitle: track.title,
-        CurrentPlayArtist: track.artist,
-        CurrentPlayImage: {uri: track.artwork},
-        CurrentPlayID: track.id
-      });
-    } else {
-      this.setState({
-        CurrentPlayTitle: 'Bài Hát',
-        CurrentPlayArtist: 'Ca Sĩ',
-        CurrentPlayImage: {
-          uri:
-            'https://musicapp1509.000webhostapp.com/Hinhanh/Ca_si/Hi%E1%BB%81n%20H%E1%BB%93.jpg',
-        },
-      });
+
+    var track = await TrackPlayer.getTrack(current_id);
+    console.log(track.id)
+    try {
+        this.props.setSong(track.id, track.title, track.artist, track.artwork)
+    } catch (error) {
+      console.log(error);
     }
+    // 
+
   };
 
   UpdateTrackUI = async () => {
@@ -199,12 +151,11 @@ class Player extends React.Component {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({userId: this.props.user.id, songId: this.state.CurrentPlayID})
+          body: JSON.stringify({userId: this.props.user.id, songId: this.props.player.id})
       });
       const result = await response.json();
       if(result != 0){
           this.props.setUser(result)
-          // Alert.alert("Thêm vào danh sách yêu thích thành công!")
       } 
       }
       else{
@@ -217,21 +168,12 @@ class Player extends React.Component {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({userId: this.props.user.id, songId: this.state.CurrentPlayID})
+              body: JSON.stringify({userId: this.props.user.id, songId: this.props.player.id})
           });
         const result = await response.json();
         this.props.setUser(result)
       }
       
-        // // console.log(result)
-        // if(result != 0){
-        //   this.props.setUser(result)
-        //   Alert.alert("Thêm vào danh sách yêu thích thành công!")
-        // }
-        // else{
-        //   Alert.alert("Bài hát đã có trong danh sách yêu thích!")
-        // }
-
     }
   }
   render() {
@@ -242,31 +184,23 @@ class Player extends React.Component {
         }}>
         <StatusBar backgroundColor="#ded5d6"></StatusBar>
         <ImageBackground
-          source={this.state.CurrentPlayImage}
+          source={{uri: this.props.player.artwork}}
           style={styles.container}
           blurRadius={22}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => this._goBack()}>
-              {/* <Image
-                source={require('../icons/icon-jiantou.png')}
-                style={styles.downButton}
-                resizeMode="contain"
-              /> */}
               <Ionicons style={styles.downButton} name="ios-arrow-down" size={35}></Ionicons>
             </TouchableOpacity>
-            <Text style={styles.song}>{this.state.CurrentPlayTitle}</Text>
+            <Text style={styles.song}>{this.props.player.title}</Text>
           </View>
           <View style={styles.singer}>
             <Text style={styles.nameSinger}>
-              {this.state.CurrentPlayArtist}
+              {this.props.player.artist}
             </Text>
           </View>
           <View style={styles.image}>
-            {/* <Image
-              source={this.state.CurrentPlayImage}
-              style={styles.imageSong}></Image> */}
 
-            <AnimationArtWork CurrentPlayImage={this.state.CurrentPlayImage} styles={styles.imageSong} playing={this.state.AudioStatus} />
+            <AnimationArtWork CurrentPlayImage={{uri: this.props.player.artwork}} styles={styles.imageSong} playing={this.state.AudioStatus} />
           </View>
           <View style={styles.taskBar}>
             <TouchableOpacity onPress = {() => this.addToFavorite()}>
@@ -410,10 +344,12 @@ class TrackStatus extends ProgressComponent {
 }
 const mapStateToProps = state => ({
   user: state.user,
+  player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setUser: bindActionCreators(setUser, dispatch)
+  setUser: bindActionCreators(setUser, dispatch),
+  setSong: bindActionCreators(setSong, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

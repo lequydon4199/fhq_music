@@ -20,6 +20,7 @@ import { defaultUser } from '../data/data';
 import { setUser } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import MiniPlayer from '../components/MiniPlayer';
 
 const drawerCover = require('../icons/cover-personal.jpeg');
 
@@ -132,6 +133,7 @@ favorite = async () => {
                 </TouchableOpacity>
               </View>
             </View>
+            <MiniPlayer navigate={this.props.navigation.navigate} />
           </View>
         </SafeAreaView>
       );
@@ -170,6 +172,7 @@ favorite = async () => {
                 <Text style={styles.buttonText}>Đăng Nhập</Text>
               </TouchableOpacity>
             </View>
+            <MiniPlayer navigate={this.props.navigation.navigate}/>
           </View>
         </SafeAreaView>
       );

@@ -7,61 +7,137 @@ import { updateSongStatus } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TrackPlayer from '../trackPlayer/index'
-import PropTypes from 'prop-types';
+import  {ProgressComponent} from 'react-native-track-player';
 
 
+console.disableYellowBox = true;
 
 class MiniPlayer extends React.Component {
-    _togglePlayPause() {
-        if(this.props.state == TrackPlayer.STATE_PAUSED) {
+    
+    constructor(props){
+        super(props);
+    }
+    state = {
+        AudioStatus: false,
+    };
+    componentDidMount() {
+        // this.UpdateTrackUI();
+        this.onTrackChange = TrackPlayer.addEventListener(
+          'playback-track-changed',
+          async (data) => {
+            this.UpdateTrack();
+          },
+        );
+        this.onTrackChange = TrackPlayer.addEventListener(
+          'playback-state',
+          async (data) => {
+            this.UpdateTrackUI();
+          },
+        );
+      }
+
+    _togglePlayPause = async () => {
+        if ((await TrackPlayer.getState()) === 2) {
             TrackPlayer.play();
-        } else {
-            TrackPlayer.pause();
+          } else {
+            TrackPlayer.pause(); 
+          }
+          this.UpdateTrackUI()
+      
+    }
+    UpdateTrackUI = async () => {
+        if ((await TrackPlayer.getState()) == 2) {
+          this.setState({
+            AudioStatus: true,
+          });
+        } else if ((await TrackPlayer.getState()) == 3) {
+          this.setState({
+            AudioStatus: false,
+          });
+        } else if ((await TrackPlayer.getState()) == 6) {
+          this.setState({
+            AudioStatus: false,
+          });
         }
+      };
+    skipToNext = async () => {
+        try {
+          await TrackPlayer.skipToNext();
+        } catch (error) {
+          console.log(error);
+          TrackPlayer.stop();
+        }
+        this.UpdateTrack();
+        this.UpdateTrackUI();
+    };
+
+    UpdateTrack = async () => {
+      var current_id = await TrackPlayer.getCurrentTrack();
+      var track = await TrackPlayer.getTrack(current_id);
+      // this.props.setSong(track.id, track.title, track.artist, track.artwork)
+    };
+
+    returnPlayer= () => {
+        this.props.navigate('Player')
     }
     render(){ 
-        var current_id =  TrackPlayer.getCurrentTrack();
-        var track =  TrackPlayer.getTrack(current_id);
-        // if(TrackPlayer.getState() == 'STATE_NONE') {
-        //     return <View></View>;
-        // }
-        // console.log(this.props.miniPlayerState.display)
-            return (
-                <TouchableOpacity onPress={() => this.props.navigate('Player')}>
-                    <View style={styles.container}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Image style={styles.picture} source={{uri: track.artwork}}/>
-                            <View style={{flex: 1}}>
-                                <Text style={styles.songTitle}>{track.title}</Text>
-                                <Text style={styles.singerName}>{track.artist}</Text>
-                            </View>
-                            <View style={styles.controlArea}>
-                                <TouchableOpacity onPress={() => this._togglePlayPause()}>
-                                <Image source={ this.state.AudioStatus ? require('../icons/play.png'): require('../icons/pause.png') } style={styles.pause} activeOpacity={1} resizeMode='contain'/>
-                                </TouchableOpacity>
-                                {/* <TouchableOpacity onPress={() => this._onForwardPressed()}>
-                                    <MaterialIcons name='skip-next' size={40}/>
-                                </TouchableOpacity>        */}
+        
+        if (!this.props.player){
+            return <View></View>
+        }else{
+                return (
+                    <TouchableOpacity onPress={() => this.returnPlayer()}>
+                        <View style={styles.container}>
+                        {/* <TrackStatus/> */}
+                            <View style={{flexDirection: 'row'}}>
+                                <Image style={styles.picture} source={{uri: this.props.player.artwork}}/>
+                                <View style={{flex: 1}}>
+                                    <Text style={styles.songTitle}>{this.props.player.title}</Text>
+                                    <Text style={styles.singerName}>{this.props.player.artist}</Text>
+                                </View>
+                                <View style={styles.controlArea}>
+                                    <TouchableOpacity onPress={() => this._togglePlayPause()}>
+                                        <MaterialIcons name={this.state.AudioStatus ? 'play-arrow' : 'pause'} size={40}/>
+                                    
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.skipToNext()}>
+                                        <MaterialIcons name='skip-next' size={40}/>
+                                    </TouchableOpacity>       
+                                </View>
                             </View>
                         </View>
-                        {/* <ProgressBar style={styles.progressBar} progress={this._getSeekSliderPosition()} color='#1976D2'/> */}
-                    </View>
-                </TouchableOpacity>
-            );
-        
+                    </TouchableOpacity>
+                );
+            }      
     }
 }
+class TrackStatus extends ProgressComponent {
+    state = {
+      duration: 0,
+      isSeeking: false,
+      SliderDisable: true,
+    };
+
+    getPosition = () =>{
+        const value = this.state.position / this.state.duration
+        return value
+    }
+    render() {
+      return (
+        <View>
+            <ProgressBar style={styles.progressBar} progress={this.getPosition() } color='#1976D2'/>
+        </View>
+      );
+    }
+  }
 
 
-
-// const mapStateToProps = state => ({
-//     miniPlayerState: state.miniPlayerState,
-//   });
-//   //
-//   const mapDispatchToProps = dispatch => ({
-//     dispatch: dispatch
-//   });
+const mapStateToProps = state => ({
+    player: state.player,
+});
   
-//   export default connect(mapStateToProps, mapDispatchToProps)(MiniPlayer);
+const mapDispatchToProps = (dispatch) => ({
+    updateSong: bindActionCreators(updateSongStatus, dispatch)
+});
   
-  
+export default connect(mapStateToProps, mapDispatchToProps)(MiniPlayer);

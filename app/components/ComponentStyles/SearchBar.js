@@ -5,9 +5,8 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: "center",
-    height: device.height*0.09,
+    height: device.height*0.075,
     width: device.width,
-    backgroundColor: '#33AFFF'
   }, 
   searchBarContainer: {
     flexDirection: 'row',
@@ -16,7 +15,6 @@ export default StyleSheet.create({
     width: device.width*0.8,
     alignItems: "center",
     marginLeft: device.width*0.03,
-    backgroundColor: '#fff',
   },
   searchIcon: {
     height: device.height*0.06,
@@ -39,5 +37,10 @@ export default StyleSheet.create({
     width: device.height*0.07,
     marginLeft: (device.width - (device.width*0.8 + device.width*0.03 + device.height*0.07))/2,
     backgroundColor: '#fff'
+  },
+  titletext: {
+    fontSize: 29,
+    fontWeight: 'bold',
+    color: '#1da1f2'
   }
 });

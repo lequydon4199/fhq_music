@@ -46,7 +46,7 @@ class Login extends Component {
 			const data = await response.json();
 			// console.log(data)
 			if(data != 0){
-				await AsyncStorage.setItem('user', this.state.username);
+				// await AsyncStorage.setItem('user', this.state.username);
 				this.props.setUser(data);
 				this.props.navigation.navigate("TabNavigator")
 			}

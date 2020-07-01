@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Animated, Easing } from "react-native";
 
 
-// const defaultArtwork = require("../../assets/defaultCover.jpeg");
 
 
 class AnimationArtWork extends React.PureComponent {
@@ -42,27 +41,16 @@ class AnimationArtWork extends React.PureComponent {
 
 
   render() {
-    // console.log((this.props.playing));
     const RotateData = this.RotateValueHolder.interpolate({
       inputRange: [0, 1],
       outputRange: ["0deg", "360deg"]
     });
-
-
-    // if(this.props.playing == true){
-    //   Animated.timing(
-    //     this.RotateValueHolder
-    //   ).stop();
-      
-    // }
-    // else{
       return (
         <Animated.Image rounded
                         source={this.props.CurrentPlayImage }
                         style={[this.props.styles, { transform: [{ rotate: RotateData }] }]}
         />
       )
-    // }
 
   }
 }

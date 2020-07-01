@@ -13,10 +13,9 @@ import {
 import { Icon } from 'react-native-elements';
 import { device } from '../config/ScreenDimensions';
 import TrackPlayer from '../trackPlayer/index'
-import { setUser } from '../actions/index';
+import { setUser, setSong } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { Alert } from 'react-native';
 
 class ListSongs extends React.Component {
   constructor(props) {
@@ -28,10 +27,10 @@ class ListSongs extends React.Component {
   }
 
   playSong = index => {
-    
-    TrackPlayer.reset();
-    TrackPlayer.add( this.state.playlist[index] )
 
+    TrackPlayer.destroy();
+    TrackPlayer.add( this.state.playlist[index] )
+    this.props.setSong(this.state.playlist[index].id, this.state.playlist[index].title, this.state.playlist[index].artist, this.state.playlist[index].artwork)
     this.props.navigate("Player") 
   }
   
@@ -54,7 +53,7 @@ class ListSongs extends React.Component {
             body: JSON.stringify({userId: this.props.user.id, songId: this.state.playlist[index].id})
         });
         const result = await response.json();
-        console.log(result)
+        // console.log(result)
         if(result != 0){
           this.props.setUser(result)
           Alert.alert("Thêm vào danh sách yêu thích thành công!")
@@ -83,7 +82,6 @@ class ListSongs extends React.Component {
 
 
   renderItem = ({item, index}) => {
-    console.log(this.props.favorite)
     return(
       <View>
         <TouchableOpacity
@@ -140,6 +138,17 @@ class ListSongs extends React.Component {
     this.state.playlist = this.props.data
     
     return (
+    //   <View><TouchableOpacity
+    //   activeOpacity={0.5}
+    //   onPress={() => {
+    //     this.playSong(index);
+
+    //   }}  
+    // >
+      // <Text>Phát Tất cả</Text>
+    // </TouchableOpacity>
+    // </View>
+      
       <FlatList
         data = {this.props.data}
         keyExtractor={(item, index) => index.toString()}
@@ -151,10 +160,12 @@ class ListSongs extends React.Component {
 }
 const mapStateToProps = state => ({
   user: state.user,
+  player: state.player
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setUser: bindActionCreators(setUser, dispatch)
+  setUser: bindActionCreators(setUser, dispatch),
+  setSong: bindActionCreators(setSong, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListSongs);
