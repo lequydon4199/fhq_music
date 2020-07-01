@@ -7,6 +7,7 @@ import SongsComponent from './SongsComponent';
 import ListSongs from './ListSongs';
 import Item from './ComponentStyles/Item';
 import TrackPlayer from '../trackPlayer/index'
+import {songs} from '../data/data';
 
 export default class PlaylistComponent extends React.Component {
     constructor(props) {
@@ -58,6 +59,10 @@ export default class PlaylistComponent extends React.Component {
         songs = responseJson
         
         }
+        if(this.props.route.params.type == 'foryou'){
+        console.log(data
+            )
+    }
         if(this.props.route.params.type == 'the_loai'){
             let response = null
             response = await fetch("https://fhq-music-app.herokuapp.com/the_loai", {

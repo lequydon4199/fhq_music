@@ -3,13 +3,31 @@ import React from 'react';
 import { View, Text, Image, ScrollView, Keyboard,TouchableOpacity, AsyncStorage } from 'react-native';
 import styles from './ComponentStyles/Item';
 import PropTypes from 'prop-types';
-
-export default class Item extends React.Component {
+import TrackPlayer from '../trackPlayer/index'
+import { setSong } from '../actions/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {songs} from '../data/data';
+class Item extends React.Component {
   constructor(props){
     super(props);
   }
+
+
+  playSong = index => {
+
+    TrackPlayer.reset();
+    TrackPlayer.add( songs[index])
+    this.props.setSong(songs[index].id, songs[index].title, songs[index].artist, songs[index].artwork)
+    
+    
+    this.props.navigate("Player") 
+  }
+  
+
   pressItem = index => {
-    if (this.props.type === 'song'){
+    if (this.props.type === 'foryou'){
+      // console.log(index)
       this.playSong(index);
     } else {
       this.props.navigate('PlaylistComponent', {type: this.props.type, data: this.props.data[index]});
@@ -63,3 +81,12 @@ Item.defaultProps = {
   pagingEnabled: true,
   data: [],
 }
+const mapStateToProps = state => ({
+  player: state.player
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setSong: bindActionCreators(setSong, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Item);

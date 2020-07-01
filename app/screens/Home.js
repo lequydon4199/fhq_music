@@ -30,7 +30,7 @@ componentDidMount() {
 
 
   render(){
-    
+    // console.log(forYou[0].id)
     return(
       <SafeAreaView style={{flex: 1, backgroundColor: '#33AFFF', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
         <View style={styles.container}>
@@ -50,6 +50,7 @@ componentDidMount() {
                 itemStyle={styles.suggestStyle}
                 showsHorizontalScrollIndicator={false}
                 navigate={this.props.navigation.navigate}
+                type = 'foryou'
               />
               <Item 
                 category="Playlist"

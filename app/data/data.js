@@ -17,11 +17,11 @@ const playListData = [
   // ];
   
   const forYou = [
-    {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'},
-    {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'},
-    {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'},
-    {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'},
-    {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'}
+    {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n.jpg'},
+    {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Anh%20Thanh%20Ni%C3%AAn.jpg'},
+    {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/%C4%90%C3%A1p%20%C3%81n%20c%E1%BB%A7a%20B%E1%BA%A1n%20.jpg'},
+    {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/We%20Were%20In%20Love.jpg'},
+    // {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'}
   ];
   
 
@@ -62,7 +62,7 @@ const playListData = [
     },
   ]
 
-
+  
 
   const user = {
     id: 0,
@@ -73,6 +73,7 @@ const playListData = [
   }
   const songs = [
     {
+
       "id": "1111",
       "url": "https://musicapp1509.000webhostapp.com/Nhac/[Audio]%20Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n%20-%20H2K%20x%20Sli%20Petey.mp3",
       "title": "Phượng Buồn",
@@ -154,4 +155,4 @@ const playListData = [
   ]
   
   
-  export {playListData, topicData, forYou, list, songs, defaultUser, user, playlist}
+  export {playListData, topicData, forYou, list, defaultUser, songs, user, playlist}

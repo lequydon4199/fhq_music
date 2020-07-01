@@ -20,7 +20,7 @@ module.exports = async function() {
   });
 
   TrackPlayer.addEventListener('remote-stop', () => {
-    TrackPlayer.destroy()
+    TrackPlayer.reset()
   });
 
   TrackPlayer.addEventListener('playback-queue-ended', () => {
