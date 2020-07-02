@@ -20,10 +20,10 @@ class MiniPlayer extends React.Component {
     }
     state = {
         AudioStatus: true,
-        CurrentPlayTitle: 'Bai Hat',
-        CurrentPlayArtist: '',
-        CurrentPlayImage: '',
-        CurrentPlayID: '',
+        // CurrentPlayTitle: 'Bai Hat',
+        // CurrentPlayArtist: '',
+        // CurrentPlayImage: '',
+        // CurrentPlayID: '',
         
     };
     componentDidMount() {
