@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import TrackPlayer from '../trackPlayer/index'
 import  {ProgressComponent} from 'react-native-track-player';
 
-
+import {  setSong } from '../actions/index';
 console.disableYellowBox = true;
 
 class MiniPlayer extends React.Component {
@@ -18,24 +18,32 @@ class MiniPlayer extends React.Component {
         super(props);
     }
     state = {
-        AudioStatus: false,
+        AudioStatus: true,
+        CurrentPlayTitle: 'Bai Hat',
+        CurrentPlayArtist: '',
+        CurrentPlayImage: '',
+        CurrentPlayID: '',
+        
     };
     componentDidMount() {
-        // this.UpdateTrackUI();
-        this.onTrackChange = TrackPlayer.addEventListener(
-          'playback-track-changed',
-          async (data) => {
-            this.UpdateTrack();
-          },
-        );
-        this.onTrackChange = TrackPlayer.addEventListener(
-          'playback-state',
-          async (data) => {
-            this.UpdateTrackUI();
-          },
-        );
-      }
+      this.onTrackChange = TrackPlayer.addEventListener(
+        'playback-track-changed',
+        async (data) => {
+          this.UpdateTrack();
+        },
+      );
+      this.onTrackChange = TrackPlayer.addEventListener(
+        'playback-state',
+        async (data) => {
+          this.UpdateTrackUI();
+        },
+      );
+    }
+    UNSAFE_componentWillMount() {
+      this.UpdateTrack();
 
+      TrackPlayer.play();
+    }
     _togglePlayPause = async () => {
         if ((await TrackPlayer.getState()) === 2) {
             TrackPlayer.play();
@@ -54,10 +62,12 @@ class MiniPlayer extends React.Component {
           this.setState({
             AudioStatus: false,
           });
+          // this.props.setSong(false)
         } else if ((await TrackPlayer.getState()) == 6) {
           this.setState({
             AudioStatus: false,
           });
+          // this.props.setSong(false)
         }
       };
     skipToNext = async () => {
@@ -65,7 +75,7 @@ class MiniPlayer extends React.Component {
           await TrackPlayer.skipToNext();
         } catch (error) {
           console.log(error);
-          TrackPlayer.stop();
+          TrackPlayer.stop();   
         }
         this.UpdateTrack();
         this.UpdateTrackUI();
@@ -73,27 +83,36 @@ class MiniPlayer extends React.Component {
 
     UpdateTrack = async () => {
       var current_id = await TrackPlayer.getCurrentTrack();
+
       var track = await TrackPlayer.getTrack(current_id);
-      // this.props.setSong(track.id, track.title, track.artist, track.artwork)
-    };
+
+      this.setState({
+        CurrentPlayTitle: track.title,
+        CurrentPlayArtist: track.artist,
+        CurrentPlayImage: {uri: track.artwork},
+        CurrentPlayID: track.id
+      });
+
+    }
 
     returnPlayer= () => {
         this.props.navigate('Player')
     }
     render(){ 
-        
+      // console.log(this.props.player.display)
         if (!this.props.player){
             return <View></View>
         }else{
+          
                 return (
                     <TouchableOpacity onPress={() => this.returnPlayer()}>
                         <View style={styles.container}>
                         {/* <TrackStatus/> */}
                             <View style={{flexDirection: 'row'}}>
-                                <Image style={styles.picture} source={{uri: this.props.player.artwork}}/>
+                                <Image style={styles.picture} source={this.state.CurrentPlayImage}/>
                                 <View style={{flex: 1}}>
-                                    <Text style={styles.songTitle}>{this.props.player.title}</Text>
-                                    <Text style={styles.singerName}>{this.props.player.artist}</Text>
+                                    <Text style={styles.songTitle}>{this.state.CurrentPlayTitle}</Text>
+                                    <Text style={styles.singerName}>{this.state.CurrentPlayArtist}</Text>
                                 </View>
                                 <View style={styles.controlArea}>
                                     <TouchableOpacity onPress={() => this._togglePlayPause()}>
@@ -137,7 +156,7 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = (dispatch) => ({
-    updateSong: bindActionCreators(updateSongStatus, dispatch)
+  setSong: bindActionCreators(setSong, dispatch)
 });
   
 export default connect(mapStateToProps, mapDispatchToProps)(MiniPlayer);

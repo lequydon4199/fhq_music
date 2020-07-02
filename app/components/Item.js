@@ -18,7 +18,7 @@ class Item extends React.Component {
 
     TrackPlayer.reset();
     TrackPlayer.add( songs[index])
-    this.props.setSong(songs[index].id, songs[index].title, songs[index].artist, songs[index].artwork)
+    this.props.setSong(true)
     
     
     this.props.navigate("Player") 

@@ -19,6 +19,7 @@ import { Image } from 'react-native';
 var AppIcon = require('./app/icons/AppIcon.png');
 import Search from './app/screens/Search';
 
+
 const Tab = createBottomTabNavigator();
 // const a =  AsyncStorage.getItem('artist')
 // console.log(a)
@@ -86,8 +87,6 @@ function App() {
   );
 }
 
-export default App;
-
-
+export default App ;
 
 

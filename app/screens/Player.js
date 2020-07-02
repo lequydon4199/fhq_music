@@ -37,7 +37,8 @@ class Player extends React.Component {
     favorite: false
   };
 
-  UNSAFE_componentWillMount() {  
+  UNSAFE_componentWillMount() {
+      this.UpdateTrack();  
       TrackPlayer.play();
   }
 
@@ -98,7 +99,7 @@ class Player extends React.Component {
     var current_id = await TrackPlayer.getCurrentTrack();
 
     var track = await TrackPlayer.getTrack(current_id);
-    console.log(track.id)
+    // console.log(track.id)
     this.setState({
       favorite: false
     })
@@ -111,12 +112,15 @@ class Player extends React.Component {
         }
       }
     }
-    try {
-        this.props.setSong(track.id, track.title, track.artist, track.artwork)
-    } catch (error) {
-      console.log(error);
-    }
-    // 
+    // var track = await TrackPlayer.getTrack(current_id);
+
+      this.setState({
+        CurrentPlayTitle: track.title,
+        CurrentPlayArtist: track.artist,
+        CurrentPlayImage: {uri: track.artwork},
+        CurrentPlayID: track.id
+      });
+    
 
   };
 
@@ -152,7 +156,7 @@ class Player extends React.Component {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({userId: this.props.user.id, songId: this.props.player.id})
+          body: JSON.stringify({userId: this.props.user.id, songId: this.state.CurrentPlayID})
       });
       const result = await response.json();
       if(result != 0){
@@ -169,7 +173,7 @@ class Player extends React.Component {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({userId: this.props.user.id, songId: this.props.player.id})
+              body: JSON.stringify({userId: this.props.user.id, songId: this.state.CurrentPlayID})
           });
         const result = await response.json();
         this.props.setUser(result)
@@ -187,23 +191,23 @@ class Player extends React.Component {
         }}>
         <StatusBar backgroundColor="#ded5d6"></StatusBar>
         <ImageBackground
-          source={{uri: this.props.player.artwork}}
+          source={this.state.CurrentPlayImage}
           style={styles.container}
           blurRadius={22}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => this._goBack()}>
               <Ionicons style={styles.downButton} name="ios-arrow-down" size={35}></Ionicons>
             </TouchableOpacity>
-            <Text style={styles.song}>{this.props.player.title}</Text>
+            <Text style={styles.song}>{this.state.CurrentPlayTitle}</Text>
           </View>
           <View style={styles.singer}>
             <Text style={styles.nameSinger}>
-              {this.props.player.artist}
+              {this.state.CurrentPlayArtist}
             </Text>
           </View>
           <View style={styles.image}>
 
-            <AnimationArtWork CurrentPlayImage={{uri: this.props.player.artwork}} styles={styles.imageSong} playing={this.state.AudioStatus} />
+            <AnimationArtWork CurrentPlayImage={this.state.CurrentPlayImage} styles={styles.imageSong} playing={this.state.AudioStatus} />
           </View>
           <View style={styles.taskBar}>
             <TouchableOpacity onPress = {() => this.addToFavorite()}>
@@ -347,12 +351,12 @@ class TrackStatus extends ProgressComponent {
 }
 const mapStateToProps = state => ({
   user: state.user,
-  player: state.player,
+  // player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: bindActionCreators(setUser, dispatch),
-  setSong: bindActionCreators(setSong, dispatch)
+  // setSong: bindActionCreators(setSong, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

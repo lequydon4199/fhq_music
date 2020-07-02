@@ -16,6 +16,7 @@ import TrackPlayer from '../trackPlayer/index'
 import { setUser, setSong } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// import NavigationService from '../NavigationService';
 
 class ListSongs extends React.Component {
   constructor(props) {
@@ -34,12 +35,13 @@ class ListSongs extends React.Component {
     }
   }
   playAllSong = () => {
-
-    TrackPlayer.destroy();
+    
+    TrackPlayer.reset();
     try {
       TrackPlayer.add( this.state.playlist)
-      this.props.setSong(this.state.playlist[0].id, this.state.playlist[0].title, this.state.playlist[0].artist, this.state.playlist[0].artwork)
-      this.props.navigate("Player") 
+      this.props.setSong(true)
+      // NavigationService.resetAction("Player")
+      this.props.navigate("Player")
     } catch (error) {
       Alert.alert("Playlist đang được phát",)
     }
@@ -53,10 +55,8 @@ class ListSongs extends React.Component {
 
     TrackPlayer.destroy();
     TrackPlayer.add( this.state.playlist[index])
-    this.props.setSong(this.state.playlist[index].id, this.state.playlist[index].title, this.state.playlist[index].artist, this.state.playlist[index].artwork)
-    
-    
-    this.props.navigate("Player") 
+    this.props.setSong(true)
+    this.props.navigate("Player")
   }
   
   addToPlaylist = index => {

@@ -1,14 +1,7 @@
-function player(state = null, action) {
+function player(state = false, action) {
     if (action.type === 'SET_SONG'){
       return {
-        state,
-        id: action.id,
-        title: action.title,
-        artist: action.artist,
-        artwork: action.artwork
-        
-        // position: action.position,
-        // playlist: action.playlist
+        display: action.display,
       }
     }
     return state;
