@@ -28,6 +28,7 @@ import TrackPlayer from '../trackPlayer/index';
 import {setSong} from '../actions/index';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import MiniPlayer from '../components/MiniPlayer';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class Search extends Component {
@@ -39,13 +40,9 @@ class Search extends Component {
   }
 
   _pressRow = (playlist) => {
-    TrackPlayer.destroy();
+    TrackPlayer.reset();
     TrackPlayer.add(playlist);
-    this.props.setSong(
-      playlist.id,
-      playlist.title,
-      playlist.artist,
-      playlist.artwork,
+    this.props.setSong(true
     );
     this.props.navigation.navigate('Player');
   };
@@ -131,6 +128,7 @@ class Search extends Component {
             </ScrollView>
           </View>
         </TouchableWithoutFeedback>
+        <MiniPlayer navigate={this.props.navigation.navigate}/>
       </SafeAreaView>
     );
   }

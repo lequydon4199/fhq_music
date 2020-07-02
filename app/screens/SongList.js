@@ -47,7 +47,7 @@ class SongList extends React.Component {
                 <ListSongs data = {this.props.user.favorite} favorite = {true} type={routeParams.type} navigate={navigate}/>
               </View>
             </View>
-            {/* <MiniPlayer navigate={navigate}/> */}
+            <MiniPlayer navigate={navigate}/>
           </View>
         </SafeAreaView>
       </React.Fragment>

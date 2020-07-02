@@ -12,6 +12,7 @@ export default StyleSheet.create({
     picture: {
       height: 57,
       width: 57,
+
     },
     songTitle: {
       fontSize: 16,
