@@ -17,8 +17,8 @@ const playListData = [
   // ];
   
   const forYou = [
-    {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n.jpg'},
     {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Anh%20Thanh%20Ni%C3%AAn.jpg'},
+    {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n.jpg'},
     {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/%C4%90%C3%A1p%20%C3%81n%20c%E1%BB%A7a%20B%E1%BA%A1n%20.jpg'},
     {picture: 'https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/We%20Were%20In%20Love.jpg'},
     // {picture: 'https://i.ytimg.com/vi/j4Jj29mUYS8/maxresdefault.jpg'}
@@ -73,20 +73,20 @@ const playListData = [
   }
   const songs = [
     {
-
-      "id": "1111",
-      "url": "https://musicapp1509.000webhostapp.com/Nhac/[Audio]%20Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n%20-%20H2K%20x%20Sli%20Petey.mp3",
-      "title": "Phượng Buồn",
-      "artist": "H2K ft Sli Petey",
-      "artwork": "https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n.jpg"
-    },
-    {
       "id": "2222",
       "url": "https://musicapp1509.000webhostapp.com/Nhac/Anh%20Thanh%20Ni%C3%AAn%20-%20HuyR%20-%20OFFICIAL%20MV.mp3",
       "title": "Anh Thanh Niên",
       "artist": "HuyR",
       "artwork": "https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Anh%20Thanh%20Ni%C3%AAn.jpg"
     },
+    {
+
+      "id": "1111",
+      "url": "https://musicapp1509.000webhostapp.com/Nhac/[Audio]%20Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n%20-%20H2K%20x%20Sli%20Petey.mp3",
+      "title": "Phượng Buồn",
+      "artist": "H2K ft Sli Petey",
+      "artwork": "https://musicapp1509.000webhostapp.com/Hinhanh/Bai_hat/Ph%C6%B0%E1%BB%A3ng%20Bu%E1%BB%93n.jpg"
+    },   
     {
       "id": "3333",
       "url": "https://musicapp1509.000webhostapp.com/Nhac/[%20Vietsub%20]%20%C4%90%C3%A1p%20%C3%81n%20C%E1%BB%A7a%20B%E1%BA%A1n%20-%20A%20Nh%C5%A9ng%20--%20%E4%BD%A0%E7%9A%84%E7%AD%94%E6%A1%88%20-%20%E9%98%BF%E5%86%97.mp3",

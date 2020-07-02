@@ -181,9 +181,10 @@ class ListSongs extends React.Component {
           onPress={() => {
             this.playAllSong();
 
-          }}  
+          }}
+          style={styles.buttonContainer}  
         >
-          <Text>Phát Tất cả</Text>
+          <Text style={styles.buttonText}>Phát Tất cả</Text>
         </TouchableOpacity>:null
         }
             

@@ -72,5 +72,23 @@ export default StyleSheet.create({
   menuOption: {
     flexDirection: 'row',
     alignItems: 'center',
-  }
+  },
+  buttonText: {
+		textAlign: 'center',
+		fontWeight: 'bold',
+    fontSize: 18,
+
+  },
+  buttonContainer: { 
+		backgroundColor: '#1da1f2',
+		width: 150,
+		height: 45,
+		borderRadius:100,
+		justifyContent:'center',
+		alignItems: 'center',
+    marginTop: 20,
+    marginLeft: device.width*0.3
+
+	},
+
 });
