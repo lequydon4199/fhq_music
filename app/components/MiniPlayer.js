@@ -70,17 +70,28 @@ class MiniPlayer extends React.Component {
           // this.props.setSong(false)
         }
       };
-    skipToNext = async () => {
+      skipToNext = async () => {
         try {
           await TrackPlayer.skipToNext();
         } catch (error) {
-          console.log(error);
-          TrackPlayer.stop();   
+          // console.log(error);
+          Alert.alert("Không có bài hát phía sau")
+        }
+        
+        this.UpdateTrack();
+        // this.UpdateTrackUI();
+      };
+    
+      skipToPrevious = async () => {
+        try {
+          await TrackPlayer.skipToPrevious();
+          this.UpdateTrack();
+        } catch (error) {
+          Alert.alert("Không có bài hát phía trước")
         }
         this.UpdateTrack();
-        this.UpdateTrackUI();
-    };
-
+        // this.UpdateTrackUI();
+      };
     UpdateTrack = async () => {
       var current_id = await TrackPlayer.getCurrentTrack();
 
@@ -107,7 +118,7 @@ class MiniPlayer extends React.Component {
                 return (
                     <TouchableOpacity onPress={() => this.returnPlayer()}>
                         <View style={styles.container}>
-                        {/* <TrackStatus/> */}
+                        <TrackStatus/>
                             <View style={{flexDirection: 'row'}}>
                                 <Image style={styles.picture} source={this.state.CurrentPlayImage}/>
                                 <View style={{flex: 1}}>

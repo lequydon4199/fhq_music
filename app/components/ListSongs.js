@@ -40,7 +40,6 @@ class ListSongs extends React.Component {
     try {
       TrackPlayer.add( this.state.playlist)
       this.props.setSong(true)
-      // NavigationService.resetAction("Player")
       this.props.navigate("Player")
     } catch (error) {
       Alert.alert("Playlist đang được phát",)
@@ -61,6 +60,7 @@ class ListSongs extends React.Component {
   
   addToPlaylist = index => {
     TrackPlayer.add( this.state.playlist[index] )
+    this.props.setSong(true)
     Alert.alert("Thêm vào playlist thành công!",)
   }
 

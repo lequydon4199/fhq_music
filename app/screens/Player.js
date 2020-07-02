@@ -28,13 +28,20 @@ import { bindActionCreators } from 'redux';
 import { Alert } from 'react-native';
 TrackPlayer.setupPlayer();
 
+
 class Player extends React.Component {
   constructor(props) {
     super(props);
   }
   state = {
     AudioStatus: false,
-    favorite: false
+    favorite: false,
+    CurrentPlayTitle: 'Bai Hat',
+    CurrentPlayArtist: '',
+    CurrentPlayImage: '',
+    CurrentPlayID: '',
+      
+
   };
 
   UNSAFE_componentWillMount() {
@@ -43,6 +50,7 @@ class Player extends React.Component {
   }
 
   componentDidMount() {
+    this.UpdateTrack();  
     this.onTrackChange = TrackPlayer.addEventListener(
       'playback-track-changed',
       async (data) => {
@@ -76,8 +84,8 @@ class Player extends React.Component {
     try {
       await TrackPlayer.skipToNext();
     } catch (error) {
-      console.log(error);
-      TrackPlayer.stop();
+      // console.log(error);
+      Alert.alert("Không có bài hát phía sau")
     }
     
     this.UpdateTrack();
@@ -89,7 +97,7 @@ class Player extends React.Component {
       await TrackPlayer.skipToPrevious();
       this.UpdateTrack();
     } catch (error) {
-      console.log(error);
+      Alert.alert("Không có bài hát phía trước")
     }
     this.UpdateTrack();
     // this.UpdateTrackUI();
@@ -101,27 +109,22 @@ class Player extends React.Component {
     var track = await TrackPlayer.getTrack(current_id);
     // console.log(track.id)
     this.setState({
-      favorite: false
+      favorite: false,
+      CurrentPlayTitle: track.title,
+      CurrentPlayArtist: track.artist,
+      CurrentPlayImage: {uri: track.artwork},
+      CurrentPlayID: track.id
     })
     if (this.props.user.username != '' ){
       for (var i = 0; i < this.props.user.favorite.length; i++){
-        if (this.props.user.favorite[i].id == this.props.player.id){
+        if (this.props.user.favorite[i].id == this.state.CurrentPlayID){
           this.setState({
             favorite: true
           })
         }
       }
     }
-    // var track = await TrackPlayer.getTrack(current_id);
-
-      this.setState({
-        CurrentPlayTitle: track.title,
-        CurrentPlayArtist: track.artist,
-        CurrentPlayImage: {uri: track.artwork},
-        CurrentPlayID: track.id
-      });
     
-
   };
 
   UpdateTrackUI = async () => {
