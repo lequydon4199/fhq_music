@@ -244,8 +244,9 @@ class Player extends React.Component {
                 source={require('../icons/previous.png')}
                 style={styles.backward}
                 resizeMode="contain"
-              />
-            </TouchableOpacity>
+              /> 
+             </TouchableOpacity>
+            
             <TouchableOpacity onPress={() => this.togglePlayback()}>
               <Image
                 source={

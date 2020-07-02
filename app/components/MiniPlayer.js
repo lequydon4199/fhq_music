@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TrackPlayer from '../trackPlayer/index'
 import  {ProgressComponent} from 'react-native-track-player';
-
+import { Alert } from 'react-native';
 import {  setSong } from '../actions/index';
+import AnimationArtWork from '../components/AnimationArtwork';
 console.disableYellowBox = true;
 
 class MiniPlayer extends React.Component {
@@ -79,7 +80,7 @@ class MiniPlayer extends React.Component {
         }
         
         this.UpdateTrack();
-        // this.UpdateTrackUI();
+        this.UpdateTrackUI();
       };
     
       skipToPrevious = async () => {
@@ -90,7 +91,7 @@ class MiniPlayer extends React.Component {
           Alert.alert("Không có bài hát phía trước")
         }
         this.UpdateTrack();
-        // this.UpdateTrackUI();
+        this.UpdateTrackUI();
       };
     UpdateTrack = async () => {
       var current_id = await TrackPlayer.getCurrentTrack();
@@ -121,18 +122,23 @@ class MiniPlayer extends React.Component {
                         <TrackStatus/>
                             <View style={{flexDirection: 'row'}}>
                                 <Image style={styles.picture} source={this.state.CurrentPlayImage}/>
+
                                 <View style={{flex: 1}}>
                                     <Text style={styles.songTitle}>{this.state.CurrentPlayTitle}</Text>
                                     <Text style={styles.singerName}>{this.state.CurrentPlayArtist}</Text>
                                 </View>
                                 <View style={styles.controlArea}>
+                                <TouchableOpacity onPress={() => this.skipToPrevious()}>
+                                  <MaterialIcons name="skip-previous" style={styles.backward} size={36}></MaterialIcons>
+                                </TouchableOpacity>
                                     <TouchableOpacity onPress={() => this._togglePlayPause()}>
                                         <MaterialIcons name={this.state.AudioStatus ? 'play-arrow' : 'pause'} size={40}/>
                                     
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => this.skipToNext()}>
                                         <MaterialIcons name='skip-next' size={40}/>
-                                    </TouchableOpacity>       
+                                    </TouchableOpacity>  
+                                         
                                 </View>
                             </View>
                         </View>
