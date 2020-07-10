@@ -36,10 +36,10 @@ class Player extends React.Component {
   state = {
     AudioStatus: false,
     favorite: false,
-    CurrentPlayTitle: 'Bai Hat',
-    CurrentPlayArtist: '',
-    CurrentPlayImage: '',
-    CurrentPlayID: '',
+    // CurrentPlayTitle: 'Bai Hat',
+    // CurrentPlayArtist: '',
+    // CurrentPlayImage: '',
+    // CurrentPlayID: '',
       
 
   };

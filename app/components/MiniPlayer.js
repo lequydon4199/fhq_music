@@ -19,11 +19,11 @@ class MiniPlayer extends React.Component {
         super(props);
     }
     state = {
-        AudioStatus: true,
-        CurrentPlayTitle: 'Bai Hat',
-        CurrentPlayArtist: '',
-        CurrentPlayImage: '',
-        CurrentPlayID: '',
+        AudioStatus: false,
+        // CurrentPlayTitle: 'Bai Hat',
+        // CurrentPlayArtist: '',
+        // CurrentPlayImage: '',
+        // CurrentPlayID: '',
         
     };
     componentDidMount() {
@@ -42,8 +42,8 @@ class MiniPlayer extends React.Component {
     }
     UNSAFE_componentWillMount() {
       this.UpdateTrack();
-
-      TrackPlayer.play();
+      this.UpdateTrackUI()
+      // TrackPlayer.play();
     }
     _togglePlayPause = async () => {
         if ((await TrackPlayer.getState()) === 2) {
@@ -63,12 +63,10 @@ class MiniPlayer extends React.Component {
           this.setState({
             AudioStatus: false,
           });
-          // this.props.setSong(false)
         } else if ((await TrackPlayer.getState()) == 6) {
           this.setState({
             AudioStatus: false,
           });
-          // this.props.setSong(false)
         }
       };
       skipToNext = async () => {
